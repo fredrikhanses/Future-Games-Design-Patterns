@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace AI.Api
+namespace AI
 {
     public interface IPathFinder
     {
