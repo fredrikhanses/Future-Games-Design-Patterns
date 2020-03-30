@@ -8,7 +8,7 @@ namespace Tests
 {
     public class TowerDefense_Unit_Tests
     {
-        private byte[,] m_Map_0, m_Map_1;        
+        private byte[,] m_Map_0, m_Map_1, m_Map_2, m_Map_3, m_Map_4;        
 
         [SetUp]
         public void Setup()
@@ -28,18 +28,57 @@ namespace Tests
                 { 1, 0, 1},
                 { 0, 0, 1},
             };
+
+            m_Map_2 = new byte[,]
+            {
+                { 0, 0, 0, 0, 0 },
+                { 0, 1, 0, 1, 0 },
+                { 0, 0, 0, 0, 0 },
+                { 1, 0, 1, 1, 0 },
+                { 0, 0, 0, 0, 0 }
+            };
+
+            m_Map_3 = new byte[,]
+            {
+                { 0, 0, 0, 0, 0 },
+                { 0, 1, 0, 1, 0 },
+                { 0, 0, 0, 0, 0 },
+                { 0, 1, 0, 1, 0 },
+                { 0, 0, 0, 0, 0 }
+            };
+
+            m_Map_4 = new byte[,]
+{
+                { 0, 0, 0},
+                { 1, 0, 0},
+                { 0, 0, 0},
+};
         }
         
         [Test]
-        [TestCase(/*MapID*/ 1, /*xStart*/ 0, /*yStart*/ 0, /*xGoal*/ 2, /*yGoal*/ 2, /*Result*/ 4)]
-        [TestCase(/*MapID*/ 1, /*xStart*/ 2, /*yStart*/ 2, /*xGoal*/ 0, /*yGoal*/ 0, /*Result*/ 4)]
+        [TestCase(/*MapID*/ 1, /*xStart*/ 0, /*yStart*/ 0, /*xGoal*/ 2, /*yGoal*/ 2, /*Result*/ 5)]
+        [TestCase(/*MapID*/ 1, /*xStart*/ 2, /*yStart*/ 2, /*xGoal*/ 0, /*yGoal*/ 0, /*Result*/ 5)]
         [TestCase(/*MapID*/ 0, /*xStart*/ 0, /*yStart*/ 0, /*xGoal*/ 4, /*yGoal*/ 4, /*Result*/ 17)]
         [TestCase(/*MapID*/ 0, /*xStart*/ 4, /*yStart*/ 4, /*xGoal*/ 0, /*yGoal*/ 0, /*Result*/ 17)]
+        [TestCase(/*MapID*/ 2, /*xStart*/ 0, /*yStart*/ 0, /*xGoal*/ 2, /*yGoal*/ 4, /*Result*/ 7)]
+        [TestCase(/*MapID*/ 1, /*xStart*/ 0, /*yStart*/ 0, /*xGoal*/ 0, /*yGoal*/ 0, /*Result*/ 1)]
+        [TestCase(/*MapID*/ 3, /*xStart*/ 2, /*yStart*/ 2, /*xGoal*/ 0, /*yGoal*/ 0, /*Result*/ 5)]
+        [TestCase(/*MapID*/ 4, /*xStart*/ 0, /*yStart*/ 0, /*xGoal*/ 0, /*yGoal*/ 2, /*Result*/ 5)]
+        [TestCase(/*MapID*/ 3, /*xStart*/ 2, /*yStart*/ 2, /*xGoal*/ 0, /*yGoal*/ 2, /*Result*/ 3)]
+
         public void Dijkstra_Solves_Raw_Data(int mapId, int xStart, int yStart, int xGoal, int yGoal, int expectedLength)
         {
             byte[,] map = mapId == 0 ? m_Map_0 : m_Map_1;
-            
-            List<Vector2Int> accessibles = new List<Vector2Int>(); 
+            if (mapId == 2)
+            {
+                map = m_Map_2;
+            }
+            if (mapId == 3)
+            {
+                map = m_Map_3;
+            }
+
+            List<Vector2Int> accessibles = new List<Vector2Int>();
 
             //We flip the array values to match horizontal values with X coords and vertical values with Y coords
             //So (0 , 0) coords starts from the bottom left and not from the top left and Y coords from bottom to top and not
@@ -55,7 +94,7 @@ namespace Tests
                 }
             }
 
-            IPathFinder pathFinder = null; //<-- TODO: Create Dijsktra pathfinder class here, TIP-->> Use accessible tiles
+            IPathFinder pathFinder = new Dijkstra(accessibles);//null; //<-- TODO: Create Dijsktra pathfinder class here, TIP-->> Use accessible tiles
             IEnumerable<Vector2Int> path = pathFinder.FindPath(new Vector2Int(xStart, yStart), new Vector2Int(xGoal, yGoal));            
             Assert.AreEqual(expectedLength, path.Count());          
         }    
