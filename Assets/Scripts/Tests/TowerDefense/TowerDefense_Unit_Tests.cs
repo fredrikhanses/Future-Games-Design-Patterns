@@ -62,7 +62,7 @@ namespace Tests
         [TestCase(/*MapID*/ 0, /*xStart*/ 4, /*yStart*/ 4, /*xGoal*/ 0, /*yGoal*/ 0, /*Result*/ 17)]
         [TestCase(/*MapID*/ 2, /*xStart*/ 0, /*yStart*/ 0, /*xGoal*/ 2, /*yGoal*/ 4, /*Result*/ 7)]
         [TestCase(/*MapID*/ 1, /*xStart*/ 0, /*yStart*/ 0, /*xGoal*/ 0, /*yGoal*/ 0, /*Result*/ 1)]
-        [TestCase(/*MapID*/ 3, /*xStart*/ 2, /*yStart*/ 2, /*xGoal*/ 0, /*yGoal*/ 0, /*Result*/ 5)]
+        [TestCase(/*MapID*/ 3, /*xStart*/ 1, /*yStart*/ 4, /*xGoal*/ 2, /*yGoal*/ 0, /*Result*/ 6)]
         [TestCase(/*MapID*/ 4, /*xStart*/ 0, /*yStart*/ 0, /*xGoal*/ 0, /*yGoal*/ 2, /*Result*/ 5)]
         [TestCase(/*MapID*/ 3, /*xStart*/ 2, /*yStart*/ 2, /*xGoal*/ 0, /*yGoal*/ 2, /*Result*/ 3)]
 
@@ -76,6 +76,10 @@ namespace Tests
             if (mapId == 3)
             {
                 map = m_Map_3;
+            }
+            if (mapId == 4)
+            {
+                map = m_Map_4;
             }
 
             List<Vector2Int> accessibles = new List<Vector2Int>();

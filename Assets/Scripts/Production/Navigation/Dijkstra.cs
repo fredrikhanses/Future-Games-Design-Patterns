@@ -7,20 +7,16 @@ namespace AI
 {
     public class Dijkstra : IPathFinder
 	{
-		HashSet<Vector2Int> accessibles = new HashSet<Vector2Int>();
+		HashSet<Vector2Int> accessibles;
 		Queue<Vector2Int> frontier = new Queue<Vector2Int>();
 		LinkedList<Vector2Int> path = new LinkedList<Vector2Int>();
-		Vector2Int current = new Vector2Int();
-		Dictionary<Vector2Int, Vector2Int> ancestors = new Dictionary<Vector2Int, Vector2Int>();
+		Vector2Int? current = new Vector2Int?();
+		Dictionary<Vector2Int, Vector2Int?> ancestors = new Dictionary<Vector2Int, Vector2Int?>();
 		Vector2Int next = new Vector2Int();
 
-		public Dijkstra(List<Vector2Int> accessibles)
+		public Dijkstra(IEnumerable<Vector2Int> accessibles)
 		{
-			this.accessibles.Clear();
-			foreach (Vector2Int vector2Int in accessibles)
-			{
-				this.accessibles.Add(vector2Int);
-			}
+			this.accessibles = new HashSet<Vector2Int>(accessibles);
 		}
 
 		public IEnumerable<Vector2Int> FindPath(Vector2Int start, Vector2Int goal)
@@ -31,7 +27,11 @@ namespace AI
 				path.AddLast(start);
 				return path;
 			}
-			frontier.Enqueue(start);
+			if(accessibles.Contains(start) && accessibles.Contains(goal))
+			{
+				ancestors.Add(start, null);
+				frontier.Enqueue(start);
+			}
 			while (frontier.Any())
 			{
 				current = frontier.Dequeue();
@@ -41,19 +41,18 @@ namespace AI
 				}
 				CheckFrontier(goal);
 			}
-			if (current.Equals(goal))
+			if (ancestors.ContainsKey(goal))
 			{
-				while (!current.Equals(start))
+				while (current.HasValue)
 				{
-					path.AddLast(current);
-					current = ancestors[current];
+					path.AddLast(current.Value);
+					current = ancestors[current.Value];
 				}
-				path.AddLast(start);
 				return path.Reverse();
 			}
 			else
 			{
-				return path;
+				return Enumerable.Empty<Vector2Int>();
 			}
 		}	
 		
@@ -68,11 +67,11 @@ namespace AI
 		{
 			foreach (Vector2Int direction in DirectionTools.Dirs)
 			{
-				next = current + direction;
-				if((accessibles.Contains(next) && !ancestors.ContainsKey(next)) || (next.Equals(goal) && !ancestors.ContainsKey(next)))
+				next = current.Value + direction;
+				if(accessibles.Contains(next) && !ancestors.ContainsKey(next))
 				{
 					frontier.Enqueue(next);
-					ancestors.Add(next, current);
+					ancestors[next] = current;
 				}
 			}
 		}
