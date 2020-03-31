@@ -7,12 +7,12 @@ namespace AI
 {
     public class Dijkstra : IPathFinder
 	{
-		HashSet<Vector2Int> accessibles;
-		Queue<Vector2Int> frontier = new Queue<Vector2Int>();
-		LinkedList<Vector2Int> path = new LinkedList<Vector2Int>();
-		Vector2Int? current = new Vector2Int?();
-		Dictionary<Vector2Int, Vector2Int?> ancestors = new Dictionary<Vector2Int, Vector2Int?>();
-		Vector2Int next = new Vector2Int();
+		private HashSet<Vector2Int> accessibles;
+		private Queue<Vector2Int> frontier = new Queue<Vector2Int>();
+		private LinkedList<Vector2Int> path = new LinkedList<Vector2Int>();
+		private Vector2Int? current = new Vector2Int?();
+		private Dictionary<Vector2Int, Vector2Int?> ancestors = new Dictionary<Vector2Int, Vector2Int?>();
+		private Vector2Int next = new Vector2Int();
 
 		public Dijkstra(IEnumerable<Vector2Int> accessibles)
 		{

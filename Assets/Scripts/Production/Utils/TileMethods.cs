@@ -12,6 +12,16 @@ public static class TileMethods
         { 9,  TileType.End },
     };
 
+    public static IReadOnlyDictionary<char, TileType> TypeByIdChar { get; } = new Dictionary<char, TileType>
+    {
+        { '0',  TileType.Path },
+        { '1',  TileType.Obstacle },
+        { '2',  TileType.TowerOne },
+        { '3',  TileType.TowerTwo},
+        { '8',  TileType.Start },
+        { '9',  TileType.End },
+    };
+
     public static bool IsWalkable(TileType type)
     {
         return type == TileType.Path || type == TileType.Start || type == TileType.End;
