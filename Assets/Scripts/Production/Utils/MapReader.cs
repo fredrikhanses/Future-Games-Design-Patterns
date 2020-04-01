@@ -78,7 +78,7 @@ public class MapReader
                 if(m_PrefabsById != null)
                 {
                     TileType tileType = TileMethods.TypeById[id];
-                    mapLayout.Add(new KeyValuePair<Vector3, GameObject>(new Vector3(x * displacement, 0, y * displacement), m_PrefabsById[tileType]));
+                    mapLayout.Add(new KeyValuePair<Vector3, GameObject>(new Vector3(x * displacement, 0, -y * displacement), m_PrefabsById[tileType]));
                 }
             }
         }

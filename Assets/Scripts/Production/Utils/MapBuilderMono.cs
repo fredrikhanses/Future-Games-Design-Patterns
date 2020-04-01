@@ -16,21 +16,20 @@ namespace Tools
         private string mapName = "map_3";
         [SerializeField, Tooltip("Only works in Play Mode")]
         private bool generateMap;
-        //[SerializeField, Tooltip("Only works in Play Mode")]
-        //private bool clearMap;
+        [SerializeField, Tooltip("Only works in Play Mode")]
+        private bool clearMap;
         //List<GameObject> objectPool = new List<GameObject>();
         private MapReaderMono mapReaderMono;
         private List<KeyValuePair<Vector3, GameObject>> mapLayout = new List<KeyValuePair<Vector3, GameObject>>();
 
         private void Awake()
         {
-            // TODO: Fetch mapKeyData from MapReaderMono
             mapReaderMono = GetComponent<MapReaderMono>();
         }
 
         private void OnValidate()
         {
-            if (generateMap && Application.isPlaying)
+            if (generateMap && Application.isPlaying && mapLayout.Count <= 0)
             {
                 mapName = Maps[mapNumber];
                 mapLayout = mapReaderMono.ReadMap(mapName);
@@ -41,17 +40,18 @@ namespace Tools
             {
                 generateMap = false;
             }
-            //if (clearMap && Application.isPlaying)
-            //{
-            //    clearMap = false;
-            //}
-            //else
-            //{
-            //    clearMap = false;
-            //}
+            if (clearMap && Application.isPlaying && mapLayout.Count > 0)
+            {
+                ClearMap();
+                clearMap = false;
+            }
+            else
+            {
+                clearMap = false;
+            }
         }
 
-        public void GenerateMap()
+        private void GenerateMap()
         {
             if(mapLayout != null && mapLayout.Count > 0)
             {
@@ -65,6 +65,19 @@ namespace Tools
             {
                 Debug.Log($"mapLayout: {mapLayout.Count}");
             }
+        }
+
+        private void ClearMap()
+        {
+            object[] oldMap = FindObjectsOfType<GameObject>();
+            foreach(GameObject gameObject in oldMap)
+            {
+                if(!((gameObject.CompareTag("MainCamera")) || (gameObject.CompareTag("MapCreator"))))
+                {
+                    Destroy(gameObject);
+                }
+            }
+            mapLayout.Clear();
         }
     }
 }
