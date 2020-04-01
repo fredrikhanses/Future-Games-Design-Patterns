@@ -7,8 +7,8 @@ namespace Tools
     {
         private StringBuilder stringBuilder = new StringBuilder();
 
-        private string mapPath = "Assets/Resources/MapSettings/";
-        private string textEnding = ".txt";
+        private readonly string mapPath = "Assets/Resources/MapSettings/";
+        private readonly string textEnding = ".txt";
         private string path;
 
         public string ReadText(string name)

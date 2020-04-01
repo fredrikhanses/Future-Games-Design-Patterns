@@ -3,12 +3,15 @@ using System.Linq;
 using AI;
 using NUnit.Framework;
 using UnityEngine;
+using Tools;
 
 namespace Tests
 {
     public class TowerDefense_Unit_Tests
     {
-        private byte[,] m_Map_0, m_Map_1, m_Map_2, m_Map_3, m_Map_4;        
+        private byte[,] m_Map_0, m_Map_1, m_Map_2, m_Map_3, m_Map_4;
+
+        List<Vector2Int> accessibles = new List<Vector2Int>();
 
         [SetUp]
         public void Setup()
@@ -82,10 +85,8 @@ namespace Tests
                 map = m_Map_4;
             }
 
-            List<Vector2Int> accessibles = new List<Vector2Int>();
-
-            //We flip the array values to match horizontal values with X coords and vertical values with Y coords
-            //So (0 , 0) coords starts from the bottom left and not from the top left and Y coords from bottom to top and not
+            //We flip the array values to match horizontal values with X coordinates and vertical values with Y coords
+            //So (0 , 0) coordinates starts from the bottom left and not from the top left and Y coords from bottom to top and not
             //from top to bottom as the default indexing 2D array system.
             for (int iRun = map.GetLength(0) - 1, i = 0; iRun >= 0; iRun--, i++)
             {
@@ -97,18 +98,23 @@ namespace Tests
                     }
                 }
             }
-
-            IPathFinder pathFinder = new Dijkstra(accessibles);//null; //<-- TODO: Create Dijsktra pathfinder class here, TIP-->> Use accessible tiles
+            IPathFinder pathFinder = new Dijkstra(accessibles);
             IEnumerable<Vector2Int> path = pathFinder.FindPath(new Vector2Int(xStart, yStart), new Vector2Int(xGoal, yGoal));            
-            Assert.AreEqual(expectedLength, path.Count());          
+            Assert.AreEqual(expectedLength, path.Count());
+            accessibles.Clear();
         }    
     
         [Test]
-        [TestCase("map_1",  0, 2, 2, 0, 18)]
-        [TestCase("map_2",  24, 0, 9, 9, 118)]
+        [TestCase("map_1", 17, 4, 0, 2, 92)]
+        [TestCase("map_2", 24, 0, 12, 9, 116)]
+        [TestCase("map_3", 0, 0, 5, 1, 7)]
         public void Dijkstra_Solves_Path(string map, int x0, int y0, int x1, int y1, int result)
         {
-            Assert.Pass();
+            MapReader mapReader = new MapReader();
+            mapReader.ReadMap(map);
+            IPathFinder pathFinder = new Dijkstra(mapReader.GetWalkableTiles());
+            IEnumerable<Vector2Int> path = pathFinder.FindPath(new Vector2Int(x0, y0), new Vector2Int(x1, y1));
+            Assert.AreEqual(result, path.Count());
         }
     }
 }
