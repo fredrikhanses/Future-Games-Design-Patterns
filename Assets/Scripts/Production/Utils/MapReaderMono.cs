@@ -40,5 +40,35 @@ namespace Tools
         {
             return mapReader.ReadMap(mapName);
         }
+
+        public Vector3 GetEnemySpawnWorldPosition()
+        {
+            return mapReader.GetEnemySpawnWorldPosition();
+        }
+
+        public Vector3 GetPlayerBaseWorldPosition()
+        {
+            return mapReader.GetPlayerBaseWorldPosition();
+        }
+
+        public List<Vector2Int> GetWalkableTiles()
+        {
+            return mapReader.GetWalkableTiles();
+        }
+
+        public Vector2Int GetPlayerBaseTilePosition()
+        {
+            return mapReader.GetPlayerBaseTilePosition();
+        }
+
+        public Vector2Int GetEnemySpawnTilePosition()
+        {
+            return mapReader.GetEnemySpawnTilePosition();
+        }
+
+        public List<KeyValuePair<Vector2Int, Vector3>> GetMapPositions()
+        {
+            return mapReader.GetMapPositions();
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿[SecureSingleton]
+﻿[MonoSecureSingleton]
 public class ResourceManager : MonoSingleton<ResourceManager>
 {
     public string GetJsonData()

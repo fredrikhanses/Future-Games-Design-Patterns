@@ -1,10 +1,10 @@
 ﻿using System;
 
 [AttributeUsage(validOn: AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-public class SingletonConfiguration : Attribute
+public class MonoSingletonConfigurationAttribute : Attribute
 {
     public string ResourcesPath { get; }
-    public SingletonConfiguration(string resourcesPath)
+    public MonoSingletonConfigurationAttribute(string resourcesPath)
     {
         ResourcesPath = resourcesPath;
     }

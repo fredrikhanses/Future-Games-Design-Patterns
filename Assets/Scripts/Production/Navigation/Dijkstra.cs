@@ -39,7 +39,7 @@ namespace AI
 				{
 					break;
 				}
-				CheckFrontier(goal);
+				CheckFrontier();
 			}
 			if (ancestors.ContainsKey(goal))
 			{
@@ -63,7 +63,7 @@ namespace AI
 			ancestors.Clear();
 		}
 
-		void CheckFrontier(Vector2Int goal)
+		void CheckFrontier()
 		{
 			foreach (Vector2Int direction in DirectionTools.Dirs)
 			{

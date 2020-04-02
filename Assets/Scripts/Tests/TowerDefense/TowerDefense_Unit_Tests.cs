@@ -3,7 +3,6 @@ using System.Linq;
 using AI;
 using NUnit.Framework;
 using UnityEngine;
-using Tools;
 
 namespace Tests
 {

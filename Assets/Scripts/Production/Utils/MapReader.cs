@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Tools;
 using UnityEngine;
 
@@ -14,6 +13,7 @@ public struct MapKeyData
         Prefab = prefab;
     }
 }
+
 public class MapReader
 {
     private readonly Dictionary<TileType, GameObject> m_PrefabsById; // Change to private
@@ -44,9 +44,15 @@ public class MapReader
     private int mapSizeY;
     private int id;
     private List<Vector2Int> walkableTiles = new List<Vector2Int>();
+    private Vector3 enemySpawnWorldPosition;
+    private Vector3 playerBaseWorldPosition;
+    private Vector2Int playerBaseTilePosition;
+    private Vector2Int enemySpawnTilePosition;
     private List<KeyValuePair<Vector3, GameObject>> mapLayout = new List<KeyValuePair<Vector3, GameObject>>();
     private List<KeyValuePair<Vector3, GameObject>> returnMapLayout = new List<KeyValuePair<Vector3, GameObject>>();
+    private List<KeyValuePair<Vector2Int, Vector3>> mapPositions = new List<KeyValuePair<Vector2Int, Vector3>>();
     private TextHandler textHandler = new TextHandler();
+    
     private enum WalkableTileNames
     {
         Path,
@@ -74,18 +80,32 @@ public class MapReader
                 if (id.Equals((int)WalkableTileNames.Path) || id.Equals((int)WalkableTileNames.Start) || id.Equals((int)WalkableTileNames.End))
                 {
                     walkableTiles.Add(new Vector2Int(x, y));
+                    mapPositions.Add(new KeyValuePair<Vector2Int, Vector3>(new Vector2Int(x, y), new Vector3(x * displacement, 0, -y * displacement)));
+                    if(id.Equals((int)WalkableTileNames.Start))
+                    {
+                        enemySpawnWorldPosition = new Vector3(x * displacement, 0, -y * displacement);
+                        enemySpawnTilePosition = new Vector2Int(x, y);
+                    }
+                    if (id.Equals((int)WalkableTileNames.End))
+                    {
+                        playerBaseWorldPosition = new Vector3(x * displacement, 0, -y * displacement);
+                        playerBaseTilePosition = new Vector2Int(x, y);
+                    }
                 }
-                if(m_PrefabsById != null)
+                /// <summary>
+                ///    Check needed because of unit tests.
+                /// </summary>
+                if (m_PrefabsById != null)
                 {
                     TileType tileType = TileMethods.TypeById[id];
                     mapLayout.Add(new KeyValuePair<Vector3, GameObject>(new Vector3(x * displacement, 0, -y * displacement), m_PrefabsById[tileType]));
                 }
             }
         }
-        foreach(KeyValuePair<Vector3, GameObject> objectPosition in mapLayout)
+        foreach (KeyValuePair<Vector3, GameObject> objectPosition in mapLayout)
         {
             returnMapLayout.Add(objectPosition);
-        }
+        }   
         mapLayout.Clear();
         return returnMapLayout;
     }
@@ -98,8 +118,34 @@ public class MapReader
         Debug.Log($"{mapHolder[0]}{mapHolder[1]}");
         return mapHolder[0];
     }
+
     public List<Vector2Int> GetWalkableTiles()
     {
         return walkableTiles;
+    }
+
+    public Vector3 GetEnemySpawnWorldPosition()
+    {
+        return enemySpawnWorldPosition;
+    }
+
+    public Vector3 GetPlayerBaseWorldPosition()
+    {
+        return playerBaseWorldPosition;
+    }
+
+    public Vector2Int GetPlayerBaseTilePosition()
+    {
+        return playerBaseTilePosition;
+    }
+
+    public Vector2Int GetEnemySpawnTilePosition()
+    {
+        return enemySpawnTilePosition;
+    }
+
+    public List<KeyValuePair<Vector2Int, Vector3>> GetMapPositions()
+    {
+        return mapPositions;
     }
 }

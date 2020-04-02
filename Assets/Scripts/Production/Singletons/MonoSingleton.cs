@@ -11,40 +11,44 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T: MonoSingleton<T>
         {
             if(m_Instance == null)
             {
-                T[] managers = FindObjectsOfType<T>();
-                if(managers.Length > 1)
+                T[] instances = FindObjectsOfType<T>();
+                if(instances.Length > 1)
                 {
                     throw new InvalidOperationException($"There is more than one {typeof(T).Name} instance in the scene");
                 }
-                if(managers.Length > 0)
+                if(instances.Length > 0)
                 {
-                    m_Instance = managers[0];
+                    m_Instance = instances[0];
                 }
                 if(m_Instance == null)
                 {
-                    object[] customAttributes= typeof(T).GetCustomAttributes(typeof(SecureSingletonAttribute), false);
-                    if (customAttributes.Length > 0 && customAttributes[0] is SecureSingletonAttribute attribute)
+                    object[] customAttributes= typeof(T).GetCustomAttributes(typeof(MonoSecureSingletonAttribute), false);
+                    if (customAttributes.Length > 0 && customAttributes[0] is MonoSecureSingletonAttribute attribute)
                     {
                         GameObject gO = new GameObject(typeof(T).Name);
                         m_Instance = gO.AddComponent<T>();
                     }
                     else
                     {
-                        object[] singletonConfigs = typeof(T).GetCustomAttributes(typeof(SingletonConfiguration), false);
-                        if (singletonConfigs.Length > 0 && singletonConfigs[0] is SingletonConfiguration singletonConfig)
+                        object[] singletonConfigs = typeof(T).GetCustomAttributes(typeof(MonoSingletonConfigurationAttribute), false);
+                        if (singletonConfigs.Length > 0 && singletonConfigs[0] is MonoSingletonConfigurationAttribute singletonConfig)
                         {
                             string path = singletonConfig.ResourcesPath;
-                            GameObject prefab = Resources.Load<GameObject>(path);
-                            if (prefab == null)
+                            GameObject singletonPrefab = Resources.Load<GameObject>(path);
+                            if (singletonPrefab == null)
                             {
                                 throw new NullReferenceException($"There is no {typeof(T).Name} prefab in the resources folder");
                             }
-                            GameObject obj = Instantiate(prefab);
+                            GameObject obj = Instantiate(singletonPrefab);
                             m_Instance = obj.GetComponent<T>();
                             if (m_Instance == null)
                             {
                                 throw new NullReferenceException($"There is no {typeof(T).Name} component attached to the singleton prefab");
                             }
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException($"The singleton type { typeof(T).Name } doesn't include the mandatory attribute { typeof(MonoSingletonConfigurationAttribute)}");
                         }
                     }
                 }
