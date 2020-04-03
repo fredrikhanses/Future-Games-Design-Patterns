@@ -5,8 +5,7 @@ public class Player : MonoBehaviour
 {   
     public event Action<int> OnPlayerHealthChanged;
 
-    [SerializeField]
-    private int health;
+    [SerializeField] private int health;
     
     public int Health
     {

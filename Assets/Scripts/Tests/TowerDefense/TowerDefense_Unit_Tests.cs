@@ -9,8 +9,7 @@ namespace Tests
     public class TowerDefense_Unit_Tests
     {
         private byte[,] m_Map_0, m_Map_1, m_Map_2, m_Map_3, m_Map_4;
-
-        List<Vector2Int> accessibles = new List<Vector2Int>();
+        readonly List<Vector2Int> accessibles = new List<Vector2Int>();
 
         [SetUp]
         public void Setup()

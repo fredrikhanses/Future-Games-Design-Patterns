@@ -7,11 +7,8 @@ namespace Tools
     [Serializable]
     public struct MapKeyDataMono
     {
-        [SerializeField]
-        private TileType tileType;
-
-        [SerializeField]
-        private GameObject prefab;
+        [SerializeField] private TileType tileType;
+        [SerializeField] private GameObject prefab;
 
         public TileType TileType => tileType;
         public GameObject Prefab => prefab;
@@ -19,10 +16,9 @@ namespace Tools
 
     public class MapReaderMono : MonoBehaviour
     {
-        [SerializeField]
-        private MapKeyDataMono[] mapReaderMonos;
+        [SerializeField, Tooltip("Cannot change during Play Mode")] private Vector3 origin = Vector3.zero;
+        [SerializeField] private MapKeyDataMono[] mapReaderMonos;
         private List<MapKeyData> mapKeyData = new List<MapKeyData>();
-        private Vector3 origin = Vector3.zero;
         private float displacement = 2.0f;
         private MapReader mapReader;
 

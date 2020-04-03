@@ -3,8 +3,7 @@ using UnityEngine.UI;
 
 public class PlayerHealthListener : MonoBehaviour
 {
-    [SerializeField]
-    private Text textField;
+    [SerializeField] private Text textField;
 
     private string playerDied = "Player Died";
     private Player player;

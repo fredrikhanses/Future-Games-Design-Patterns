@@ -6,8 +6,10 @@ namespace Tools
 {
     public class MapBuilderMono : MonoBehaviour
     {
-        [SerializeField, Range(1, 3), Tooltip("Choose which map to generate")]
-        private uint mapNumber = 3;
+        [SerializeField, Range(1, 3), Tooltip("Choose which map to generate")] private uint mapNumber = 3;
+        [SerializeField, Tooltip("Only works in Play Mode")] private bool generateMap;
+        [SerializeField, Tooltip("Only works in Play Mode")] private bool playMap;
+        [SerializeField, Tooltip("Only works in Play Mode")] private bool clearMap;
         private Dictionary<uint, string> Maps = new Dictionary<uint, string>
         {
             { 1,  "map_1" },
@@ -15,12 +17,6 @@ namespace Tools
             { 3,  "map_3" },
         };
         private string mapName = "map_3";
-        [SerializeField, Tooltip("Only works in Play Mode")]
-        private bool generateMap;
-        [SerializeField, Tooltip("Only works in Play Mode")]
-        private bool playMap;
-        [SerializeField, Tooltip("Only works in Play Mode")]
-        private bool clearMap;
         //List<GameObject> objectPool = new List<GameObject>();
         private MapReaderMono mapReaderMono;
         private List<KeyValuePair<Vector3, GameObject>> mapLayout = new List<KeyValuePair<Vector3, GameObject>>();
@@ -92,7 +88,6 @@ namespace Tools
         {
             EnemyManager.Instance.CreateEnemy(mapReaderMono.GetEnemySpawnWorldPosition());
             EnemyManager.Instance.Move(path, mapReaderMono.GetMapPositions());
-            //EnemyManager.Instance.MoveEnemy(mapReaderMono.GetPlayerBaseWorldPosition());
         }
 
         private void ClearMap()

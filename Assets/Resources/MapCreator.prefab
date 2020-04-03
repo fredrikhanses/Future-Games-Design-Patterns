@@ -79,3 +79,4 @@ MonoBehaviour:
   - tileType: 5
     prefab: {fileID: 6360046985728068882, guid: c6e46598445204935bcf241407b687d5,
       type: 3}
+  origin: {x: 0, y: 0, z: 0}

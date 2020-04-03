@@ -4,8 +4,7 @@ using UnityEngine;
 [MonoSingletonConfigurationAttribute(resourcesPath:"EnemyManager")]
 public class EnemyManager : MonoSingleton<EnemyManager>
 {
-    [SerializeField]
-    private GameObject enemyPrefab;
+    [SerializeField] private GameObject enemyPrefab;
 
     private EnemyController enemyController;
     private GameObject currentEnemy;
@@ -26,14 +25,9 @@ public class EnemyManager : MonoSingleton<EnemyManager>
         currentEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
     }
 
-    public void MoveEnemy(Vector3 targetPosition)
-    {
-        enemyController = currentEnemy.GetComponent<EnemyController>();
-        enemyController.MoveTo(targetPosition);
-    }
-
     public void Move(IEnumerable<Vector2Int> path, List<KeyValuePair<Vector2Int, Vector3>> mapPositions)
     {
+        enemyController = currentEnemy.GetComponent<EnemyController>();
         enemyController.Move(path, mapPositions);
     }
 }
