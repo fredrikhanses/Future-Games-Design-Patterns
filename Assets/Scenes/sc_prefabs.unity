@@ -215,7 +215,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Welcome
+  m_Text: 
 --- !u!222 &1117211340
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -319,8 +319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3908f2c40fcc36745a0ad5ab2869c72a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 20
-  name: Fredrik
 --- !u!4 &1620826976
 Transform:
   m_ObjectHideFlags: 0

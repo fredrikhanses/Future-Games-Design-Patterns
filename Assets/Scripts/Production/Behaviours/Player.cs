@@ -1,52 +1,20 @@
-﻿using System;
+﻿using Tools;
 using UnityEngine;
 
 public class Player : MonoBehaviour
-{   
-    [SerializeField] private int health;
-    public event Action<int> OnPlayerHealthChanged;
-    public int Health
-    {
-        get => health;
-        set
-        {
-            if(health != value)
-            {
-                health = value;
-                OnPlayerHealthChanged?.Invoke(health);
-            }
-        }
-    }
-
-    [SerializeField] private string name;
-    public event Action<string> OnNameChanged;
-    public string Name
-    {
-        get => name;
-        set
-        {
-            if (name != value)
-            {
-                name = value;
-                OnNameChanged?.Invoke(name);
-            }
-        }
-    }
-
-    private void Start()
-    {
-        OnPlayerHealthChanged?.Invoke(health);
-    }
-
+{
+    public ObservableProperty<int> Health = new ObservableProperty<int>();
+    public ObservableProperty<string> Name = new ObservableProperty<string>();
+   
     [ContextMenu("Increase Health")]
     public void IncreaseHealth()
     {
-        Health++;
+        Health.Value++;
     }
 
     [ContextMenu("Decrease Health")]
     public void DecreaseHealth()
     {
-        Health--;
+        Health.Value--;
     }
 }

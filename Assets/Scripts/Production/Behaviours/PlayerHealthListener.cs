@@ -1,18 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using Tools;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerHealthListener : MonoBehaviour
 {
     [SerializeField] private Text textField;
 
-    private string playerDied = "Player Died";
     private Player player;
+    private IDisposable subscription;
+    private string playerDied = "Player Died";
 
     private void OnEnable()
     {
         if (player != null)
         {
-            player.OnPlayerHealthChanged += UpdateTextField;
+            subscription = player.Health.Subscribe(UpdateTextField);
         }
     }
 
@@ -23,17 +26,19 @@ public class PlayerHealthListener : MonoBehaviour
             textField = GetComponent<Text>();
         }
         player = FindObjectOfType<Player>();
-        player.OnPlayerHealthChanged += UpdateTextField;
+        if (player != null)
+        {
+            subscription = player.Health.Subscribe(UpdateTextField);
+        }
     }
 
     private void OnDisable()
     {
-        player.OnPlayerHealthChanged -= UpdateTextField;
+        subscription.Dispose();
     }
 
     private void UpdateTextField(int playerHealth)
     {
-        
         if (playerHealth <= 0)
         {
             textField.text = playerDied;
