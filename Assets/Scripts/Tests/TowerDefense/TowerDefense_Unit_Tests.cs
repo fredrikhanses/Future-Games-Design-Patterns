@@ -109,8 +109,8 @@ namespace Tests
         public void Dijkstra_Solves_Path(string map, int x0, int y0, int x1, int y1, int result)
         {
             MapReader mapReader = new MapReader();
-            mapReader.ReadMap(map);
-            IPathFinder pathFinder = new Dijkstra(mapReader.GetWalkableTiles());
+            MapData mapData = mapReader.ReadMap(map);
+            IPathFinder pathFinder = new Dijkstra(mapData.WalkableTiles);
             IEnumerable<Vector2Int> path = pathFinder.FindPath(new Vector2Int(x0, y0), new Vector2Int(x1, y1));
             Assert.AreEqual(result, path.Count());
         }

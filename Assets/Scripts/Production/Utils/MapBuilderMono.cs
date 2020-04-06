@@ -6,22 +6,23 @@ namespace Tools
 {
     public class MapBuilderMono : MonoBehaviour
     {
-        [SerializeField, Range(1, 3), Tooltip("Choose which map to generate")] private uint mapNumber = 3;
+        [SerializeField, Range(1, 4), Tooltip("Choose which map to generate")] private uint mapNumber = 3;
         [SerializeField, Tooltip("Only works in Play Mode")] private bool generateMap;
         [SerializeField, Tooltip("Only works in Play Mode")] private bool playMap;
         [SerializeField, Tooltip("Only works in Play Mode")] private bool clearMap;
+
+        private string mapName = "map_3";
+        private MapReaderMono mapReaderMono;
+        private IPathFinder pathFinder;
+        private IEnumerable<Vector2Int> path;
+        private MapData mapData = new MapData();
         private Dictionary<uint, string> Maps = new Dictionary<uint, string>
         {
-            { 1,  "map_1" },
-            { 2,  "map_2" },
-            { 3,  "map_3" },
+            { 1, "map_1" },
+            { 2, "map_2" },
+            { 3, "map_3" },
+            { 4, "map_4" }
         };
-        private string mapName = "map_3";
-        //List<GameObject> objectPool = new List<GameObject>();
-        private MapReaderMono mapReaderMono;
-        private List<KeyValuePair<Vector3, GameObject>> mapLayout = new List<KeyValuePair<Vector3, GameObject>>();
-        IPathFinder pathFinder;
-        IEnumerable<Vector2Int> path;
 
         private void Awake()
         {
@@ -30,19 +31,16 @@ namespace Tools
 
         private void OnValidate()
         {
-            if (generateMap && Application.isPlaying && mapLayout.Count <= 0)
+            if (generateMap && Application.isPlaying && mapData.MapLayout.Count <= 0)
             {
-                mapName = Maps[mapNumber];
-                mapLayout = mapReaderMono.ReadMap(mapName);
                 GenerateMap();
-                GeneratePath();
                 generateMap = false;
             }
             else
             {
                 generateMap = false;
             }
-            if (clearMap && Application.isPlaying && mapLayout.Count > 0)
+            if (clearMap && Application.isPlaying && mapData.MapLayout.Count > 0)
             {
                 ClearMap();
                 clearMap = false;
@@ -51,7 +49,7 @@ namespace Tools
             {
                 clearMap = false;
             }
-            if (playMap && Application.isPlaying && mapLayout.Count > 0)
+            if (playMap && Application.isPlaying && mapData.MapLayout.Count > 0)
             {
                 PlayMap();
                 playMap = false;
@@ -64,30 +62,52 @@ namespace Tools
 
         private void GenerateMap()
         {
-            if (mapLayout != null && mapLayout.Count > 0)
+            ReadMap();
+            GeneratePath();
+            CalculateWalkPoints(); 
+            if (mapData.MapLayout != null && mapData.MapLayout.Count > 0)
             {
-                foreach (KeyValuePair<Vector3, GameObject> objectPosition in mapLayout)
+                foreach (KeyValuePair<Vector3, GameObject> objectPosition in mapData.MapLayout)
                 {
                     Instantiate(objectPosition.Value, objectPosition.Key, Quaternion.identity);
-                    //objectPool.Add(currentPrefab);
                 }
             }
             else
             {
-                Debug.Log($"mapLayout: {mapLayout.Count}");
+                Debug.Log($"mapLayout: {mapData.MapLayout.Count}");
             }
+        }
+
+        private void ReadMap()
+        {
+            mapName = Maps[mapNumber];
+            mapData = mapReaderMono.ReadMap(mapName);
         }
 
         private void GeneratePath()
         {
-            pathFinder = new Dijkstra(mapReaderMono.GetWalkableTiles());
-            path = pathFinder.FindPath(mapReaderMono.GetEnemySpawnTilePosition(), mapReaderMono.GetPlayerBaseTilePosition());
+            pathFinder = new Dijkstra(mapData.WalkableTiles);
+            path = pathFinder.FindPath(mapData.EnemySpawnTilePosition, mapData.PlayerBaseTilePosition);
+        }
+
+        private void CalculateWalkPoints()
+        {
+            foreach (Vector2Int tilePosition in path)
+            {
+                foreach (KeyValuePair<Vector2Int, Vector3> mapPosition in mapData.MapPositions)
+                {
+                    if (tilePosition.Equals(mapPosition.Key))
+                    {
+                        mapData.WalkPoints.AddLast(mapPosition.Value);
+                    }
+                }
+            }
         }
 
         private void PlayMap()
         {
-            EnemyManager.Instance.CreateEnemy(mapReaderMono.GetEnemySpawnWorldPosition());
-            EnemyManager.Instance.Move(path, mapReaderMono.GetMapPositions());
+            EnemyManager.Instance.CreateEnemy(mapData.EnemySpawnWorldPosition);
+            EnemyManager.Instance.MoveStart(mapData.WalkPoints);
         }
 
         private void ClearMap()
@@ -100,7 +120,7 @@ namespace Tools
                     Destroy(gameObject);
                 }
             }
-            mapLayout.Clear();
+            mapData.ClearLists();
         }
     }
 }

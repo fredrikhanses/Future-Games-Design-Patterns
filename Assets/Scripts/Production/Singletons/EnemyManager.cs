@@ -25,9 +25,9 @@ public class EnemyManager : MonoSingleton<EnemyManager>
         currentEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
     }
 
-    public void Move(IEnumerable<Vector2Int> path, List<KeyValuePair<Vector2Int, Vector3>> mapPositions)
+    public void MoveStart(LinkedList<Vector3> walkPoints)
     {
         enemyController = currentEnemy.GetComponent<EnemyController>();
-        enemyController.Move(path, mapPositions);
+        enemyController.MoveStart(walkPoints);
     }
 }

@@ -3,10 +3,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {   
-    public event Action<int> OnPlayerHealthChanged;
-
     [SerializeField] private int health;
-    
+    public event Action<int> OnPlayerHealthChanged;
     public int Health
     {
         get => health;
@@ -16,6 +14,21 @@ public class Player : MonoBehaviour
             {
                 health = value;
                 OnPlayerHealthChanged?.Invoke(health);
+            }
+        }
+    }
+
+    [SerializeField] private string name;
+    public event Action<string> OnNameChanged;
+    public string Name
+    {
+        get => name;
+        set
+        {
+            if (name != value)
+            {
+                name = value;
+                OnNameChanged?.Invoke(name);
             }
         }
     }

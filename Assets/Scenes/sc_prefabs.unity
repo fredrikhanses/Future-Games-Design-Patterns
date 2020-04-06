@@ -320,6 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 20
+  name: Fredrik
 --- !u!4 &1620826976
 Transform:
   m_ObjectHideFlags: 0
@@ -443,7 +444,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1801198575}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: DontDestroy
   m_TagString: DontDestroy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
