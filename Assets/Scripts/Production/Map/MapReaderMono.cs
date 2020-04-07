@@ -16,11 +16,15 @@ namespace Tools
 
     public class MapReaderMono : MonoBehaviour
     {
-        [SerializeField, Tooltip("Cannot change during Play Mode")] private Vector3 origin = Vector3.zero;
+       
         [SerializeField] private MapKeyDataMono[] mapReaderMonos;
 
-        private List<MapKeyData> mapKeyData = new List<MapKeyData>();
+        public Vector3 Origin { get => origin; set => origin = value; }
+        public float Displacement { get => displacement; set => displacement = value; }
+        
         private float displacement = 2.0f;
+        private Vector3 origin = Vector3.zero;
+        private List<MapKeyData> m_MapKeyData = new List<MapKeyData>();
         private MapReader mapReader;
 
         private void Awake()
@@ -28,13 +32,13 @@ namespace Tools
             foreach (MapKeyDataMono readerMono in mapReaderMonos)
             {
                 MapKeyData data = new MapKeyData(readerMono.TileType, readerMono.Prefab);
-                mapKeyData.Add(data);
+                m_MapKeyData.Add(data);
             }
-            mapReader = new MapReader(origin, displacement, mapKeyData: mapKeyData);
         }
 
         public MapData ReadMap(string mapName)
         {
+            mapReader = new MapReader(Origin, Displacement, m_MapKeyData);
             return mapReader.ReadMap(mapName);
         }
     }

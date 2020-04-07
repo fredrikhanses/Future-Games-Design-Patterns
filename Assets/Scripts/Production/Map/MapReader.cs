@@ -17,7 +17,7 @@ public struct MapKeyData
 public class MapReader
 {
     private readonly Dictionary<TileType, GameObject> m_PrefabsById; // Change to private
-    private readonly float displacement;
+    private readonly float displacement = 1f;
     private readonly Vector3 origin;
 
     /// <summary>
@@ -43,7 +43,7 @@ public class MapReader
     private int mapSizeX;
     private int mapSizeY;
     private int id;
-    private float groundHeight = 1f;
+    private float groundHeight = 0.8f;
     private readonly TextHandler textHandler = new TextHandler();
     private readonly MapData mapData = new MapData();
     private Vector3 enemySpawnWorldPosition = new Vector3();
@@ -59,6 +59,7 @@ public class MapReader
 
     public MapData ReadMap(string mapName)
     {
+        mapData.ClearLists();
         mapContent = GetMap(mapName);
         mapHolder = mapContent.Split(lineSeparatorChar, StringSplitOptions.RemoveEmptyEntries);
         foreach (string line in mapHolder)
@@ -86,7 +87,7 @@ public class MapReader
                     if (id.Equals((int)WalkableTileNames.Start))
                     {
                         enemySpawnWorldPosition = currentWorldPosition;
-                        enemySpawnWorldPosition.y = groundHeight;
+                        enemySpawnWorldPosition.y += groundHeight;
                         mapData.EnemySpawnWorldPosition = enemySpawnWorldPosition;
                         mapData.EnemySpawnTilePosition = currentWalkableTilePosition;
                     }

@@ -5,9 +5,9 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private float speed = 2f;
-    [SerializeField] private float groundHeight = 1f;
     [SerializeField] Rigidbody m_Rigidbody;
 
+    private float groundHeight = 0.8f;
     private Vector3 targetPosition;
     private bool move;
     private bool stop;
@@ -66,12 +66,12 @@ public class EnemyController : MonoBehaviour
     }
     
     private void MoveTo(Vector3 targetPosition)
-    {   
+    {
         velocity.x = Pythagoras(this.targetPosition.x, targetPosition.x);
         velocity.z = Pythagoras(this.targetPosition.z, targetPosition.z);
-        this.targetPosition.x = targetPosition.x;
-        this.targetPosition.y = groundHeight;
-        this.targetPosition.z = targetPosition.z;
+        transform.rotation = Quaternion.LookRotation(velocity);
+        this.targetPosition = targetPosition;
+        this.targetPosition.y += groundHeight;
         Debug.Log(this.targetPosition);
         Debug.Log(velocity);
         m_Rigidbody.velocity = velocity.normalized * speed;
@@ -108,8 +108,7 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
-            
+            Destroy(gameObject);  
         }
     }
 }
