@@ -5,7 +5,7 @@ public class SingletonCaller : MonoBehaviour
     [ContextMenu("Create Enemy")]
     public void CreateEnemy()
     {
-        EnemyManager.Instance.CreateEnemy();
+        
     }
 
     [ContextMenu("Load Json File")]

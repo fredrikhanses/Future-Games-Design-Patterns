@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf02840ded6e02c4aa1a59218c3a90fa, type: 3}
-  m_Name: Bullet Scriptable Pool 1
+  m_Name: Strong Enemy Scriptable Pool
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1187884266885560945, guid: 31c7796ecda363b4682ee1ea0019adaf, type: 3}
+  prefab: {fileID: 3358623668188840345, guid: b89a11b0af79f224d8e0af1ee145eb54, type: 3}
   initSize: 10
   expandBy: 5
   hasParent: 1
-  parentName: ScriptablePool
+  parentName: StrongScriptablePool

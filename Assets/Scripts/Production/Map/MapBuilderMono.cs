@@ -7,15 +7,16 @@ namespace Tools
     public class MapBuilderMono : MonoBehaviour
     {
         [SerializeField] private Vector3 origin = Vector3.zero;
-        [SerializeField, Range(1, 4), Tooltip("Choose which map to generate")] private uint mapNumber = 3;
+        [SerializeField, Range(1, 4), Tooltip("Choose which map to generate")] private uint mapNumber = 4;
         [SerializeField, Tooltip("Only works in Play Mode")] private bool generateMap;
         [SerializeField, Tooltip("Only works in Play Mode")] private bool playMap;
         [SerializeField, Tooltip("Only works in Play Mode")] private bool clearMap;
 
+        private float spawnInterval = 1f;
         private Camera mainCamera;
         private MoveCamera moveCamera;
         private float tileDisplacement = 2.0f;
-        private string mapName = "map_3";
+        private string mapName = "map_4";
         private MapReaderMono mapReaderMono;
         private IPathFinder pathFinder;
         private IEnumerable<Vector2Int> path;
@@ -63,6 +64,21 @@ namespace Tools
             else
             {
                 playMap = false;
+            }
+        }
+
+        private void Start()
+        {
+            GenerateMap();
+        }
+
+        private void FixedUpdate()
+        {
+            spawnInterval -= Time.fixedDeltaTime;
+            if(spawnInterval <= 0f)
+            {
+                PlayMap();
+                spawnInterval = Random.Range(1f, 3f);
             }
         }
 
@@ -120,8 +136,7 @@ namespace Tools
 
         private void PlayMap()
         {
-            EnemyManager.Instance.CreateEnemy(mapData.EnemySpawnWorldPosition);
-            EnemyManager.Instance.MoveStart(mapData.WalkPoints);
+            EnemyManager.Instance.CreateEnemy(mapData.EnemySpawnWorldPosition, mapData.WalkPoints);
         }
 
         private void ClearMap()

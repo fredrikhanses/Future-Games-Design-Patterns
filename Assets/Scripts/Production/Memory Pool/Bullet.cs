@@ -5,10 +5,11 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float minSpeed;
     [SerializeField] private float maxSpeed;
     [SerializeField] private Rigidbody m_Rigidbody;
+    [SerializeField] private GameObject m_Explosion;
 
-    public void Push()
+    public void Push(Vector3 direction)
     {
-        m_Rigidbody.velocity = Random.onUnitSphere * Random.Range(minSpeed, maxSpeed);
+        m_Rigidbody.velocity = direction * Random.Range(minSpeed, maxSpeed);
         Invoke(nameof(Sleep), 2f);
     }
     
@@ -25,5 +26,12 @@ public class Bullet : MonoBehaviour
     private void OnDisable()
     {
         CancelInvoke(nameof(Sleep));
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        //ObjecPool this
+        Instantiate(m_Explosion, transform.position, Quaternion.identity);
+        gameObject.SetActive(false);
     }
 }

@@ -5,7 +5,7 @@ public class Weapon : MonoBehaviour
 {
     //[SerializeField] private Bullet bulletComponentPrefab;
     //[SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private GameObjectScriptablePool scriptablePool;
+    [SerializeField] private GameObjectScriptablePool m_BulletScriptablePool;
 
     //private GameObjectPool bulletPool;
     //private ComponentPool<Bullet> bulletComponentPool;
@@ -27,10 +27,10 @@ public class Weapon : MonoBehaviour
     //    bulletComponentPool = new ComponentPool<Bullet>(1, bulletComponentPrefab, 1, bulletComponentParent.transform);
     //}
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space))
-        {
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //    {
             /// <summary>
             ///    GameObjectPool
             /// </summary>
@@ -55,10 +55,21 @@ public class Weapon : MonoBehaviour
             /// <summary>
             ///    ScriptableObjectPool
             /// </summary>
-            GameObject bullet = scriptablePool.Rent(true);
-            Bullet bulletComponent = bullet.GetComponent<Bullet>();
-            bulletComponent.transform.position = transform.position;
-        }
+    //        GameObject bullet = scriptablePool.Rent(true);
+    //        Bullet bulletComponent = bullet.GetComponent<Bullet>();
+    //        bulletComponent.Reset();
+    //        bulletComponent.transform.position = transform.position;
+    //        bulletComponent.Push(Random.onUnitSphere);
+    //    }
+    //}
+
+    public void Shoot(Vector3 direction)
+    {
+        GameObject bullet = m_BulletScriptablePool.Rent(true);
+        Bullet bulletComponent = bullet.GetComponent<Bullet>();
+        bulletComponent.Reset();
+        bulletComponent.transform.position = transform.position;
+        bulletComponent.Push(direction);
     }
 
     //private void OnDestroy()

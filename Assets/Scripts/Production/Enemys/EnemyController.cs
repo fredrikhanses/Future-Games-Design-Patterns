@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(Animator))]
 public class EnemyController : MonoBehaviour
 {
+    [SerializeField] private int health = 10;
     [SerializeField] private float speed = 2f;
     [SerializeField] Rigidbody m_Rigidbody;
 
+    private int m_OriginalHealth;
     private float groundHeight = 0.8f;
     private Vector3 targetPosition;
     private bool move;
@@ -14,6 +16,7 @@ public class EnemyController : MonoBehaviour
     private LinkedList<Vector3> walkPoints;
     private readonly float maxDistanceToGoal = 0.01f;
     private Vector3 velocity;
+    private Animator m_Animator;
 
     private void Awake()
     {
@@ -21,7 +24,11 @@ public class EnemyController : MonoBehaviour
         {
             m_Rigidbody = GetComponent<Rigidbody>();
         }
-        targetPosition = transform.position;
+        if(m_Animator == null)
+        {
+            m_Animator = GetComponent<Animator>();
+        }
+        m_OriginalHealth = health;
     }
 
     private void FixedUpdate()
@@ -37,7 +44,6 @@ public class EnemyController : MonoBehaviour
                 stop = true;
             }
         }
-        
         if(stop)
         {
             stop = false;
@@ -56,6 +62,7 @@ public class EnemyController : MonoBehaviour
             /// </summary>
             this.walkPoints.RemoveFirst();
             Debug.Log(this.walkPoints.First.Value);
+            m_Animator.SetBool("isWalking", true);
             MoveTo(this.walkPoints.First.Value);
             this.walkPoints.RemoveFirst(); 
         }
@@ -67,6 +74,7 @@ public class EnemyController : MonoBehaviour
     
     private void MoveTo(Vector3 targetPosition)
     {
+        this.targetPosition = transform.position;
         velocity.x = Pythagoras(this.targetPosition.x, targetPosition.x);
         velocity.z = Pythagoras(this.targetPosition.z, targetPosition.z);
         transform.rotation = Quaternion.LookRotation(velocity);
@@ -108,7 +116,46 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);  
+            //DamagePlayer
+            Sleep(); 
+        }
+    }
+
+    public void Reset(Vector3 spawnPosition)
+    {
+        m_Rigidbody.velocity = Vector3.zero;
+        health = m_OriginalHealth;
+        m_Animator.SetBool("Killed", false);
+        m_Animator.SetBool("isWalking", false);
+        m_Animator.SetBool("Damaged", false);
+        transform.position = spawnPosition;
+        transform.rotation = Quaternion.identity;
+    }
+
+    private void Sleep()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke(nameof(Sleep));
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bullet") && health > 0)
+        {
+            health--;
+            if (health <= 0)
+            {
+                m_Animator.SetBool("Killed", true);
+                Invoke(nameof(Sleep), 0.5f);
+            }
+            else
+            {
+                m_Animator.SetBool("Damaged", true);
+            }
         }
     }
 }

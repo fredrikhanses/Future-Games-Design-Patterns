@@ -1,16 +1,17 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7172378810639127280
+--- !u!1 &8706433728617951082
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2390328015633735266, guid: 8dc5fa288a042464392362d49acdb496,
+    type: 3}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7172378810639127286}
-  - component: {fileID: 7172378810639127287}
-  - component: {fileID: 7172378810639127281}
+  - component: {fileID: 8706433728617951083}
+  - component: {fileID: 8706433728617950997}
+  - component: {fileID: 8706433728617950996}
   m_Layer: 0
   m_Name: MapCreator
   m_TagString: Untagged
@@ -18,43 +19,47 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7172378810639127286
+--- !u!4 &8706433728617951083
 Transform:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2390328015633735268, guid: 8dc5fa288a042464392362d49acdb496,
+    type: 3}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7172378810639127280}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 8706433728617951082}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7172378810639127287
+--- !u!114 &8706433728617950997
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2390328015633735269, guid: 8dc5fa288a042464392362d49acdb496,
+    type: 3}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7172378810639127280}
+  m_GameObject: {fileID: 8706433728617951082}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68ff054e16b15f349b1f35932147a6bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  origin: {x: 0, y: 0, z: 0}
   mapNumber: 3
   generateMap: 0
   playMap: 0
   clearMap: 0
---- !u!114 &7172378810639127281
+--- !u!114 &8706433728617950996
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2390328015633735267, guid: 8dc5fa288a042464392362d49acdb496,
+    type: 3}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7172378810639127280}
+  m_GameObject: {fileID: 8706433728617951082}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f47c8c969b7ef4046b081a94b7d6d968, type: 3}
@@ -79,4 +84,3 @@ MonoBehaviour:
   - tileType: 5
     prefab: {fileID: 6360046985728068882, guid: c6e46598445204935bcf241407b687d5,
       type: 3}
-  origin: {x: 0, y: 0, z: 0}

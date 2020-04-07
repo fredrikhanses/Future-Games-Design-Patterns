@@ -261,6 +261,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1430611518195826670}
+  - component: {fileID: 7457201851688565980}
   m_Layer: 0
   m_Name: Tower_Model
   m_TagString: Untagged
@@ -284,6 +285,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7457201851688565980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5719485938209910767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60151b681d2ee7e4ca84c0de6064287e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weapon: {fileID: 7652787096452949392}
+  m_TowerTop: {fileID: 7391422965515881056}
 --- !u!1 &7391422965515881056
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,6 +388,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 242510282953726403}
+  - component: {fileID: 7652787096452949392}
   m_Layer: 0
   m_Name: Bullet_Spawn_Point
   m_TagString: Untagged
@@ -394,6 +410,20 @@ Transform:
   m_Father: {fileID: 8319623177269437157}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7652787096452949392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7553907597991888725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4798360a416ccb468d8c102419f92c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BulletScriptablePool: {fileID: 11400000, guid: 548200143ec8320438463c3ee58c3337,
+    type: 2}
 --- !u!1 &8838888772816553698
 GameObject:
   m_ObjectHideFlags: 0
