@@ -183,11 +183,11 @@ GameObject:
   - component: {fileID: 344053378720898323}
   m_Layer: 0
   m_Name: Player_Base_Building_Model
-  m_TagString: Untagged
+  m_TagString: PlayerBase
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &344053378720898323
 Transform:
   m_ObjectHideFlags: 0

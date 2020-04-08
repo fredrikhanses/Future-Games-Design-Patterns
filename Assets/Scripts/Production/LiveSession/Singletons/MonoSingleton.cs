@@ -11,14 +11,14 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T: MonoSingleton<T>
         {
             if(m_Instance == null)
             {
-                T[] instances = FindObjectsOfType<T>();
-                if(instances.Length > 1)
+                T[] singletons = FindObjectsOfType<T>();
+                if(singletons.Length > 1)
                 {
                     throw new InvalidOperationException($"There is more than one {typeof(T).Name} instance in the scene");
                 }
-                if(instances.Length > 0)
+                if(singletons.Length > 0)
                 {
-                    m_Instance = instances[0];
+                    m_Instance = singletons[0];
                 }
                 if(m_Instance == null)
                 {

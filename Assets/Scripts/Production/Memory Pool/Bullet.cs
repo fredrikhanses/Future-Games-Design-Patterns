@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using Tools;
+using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private float minSpeed;
     [SerializeField] private float maxSpeed;
     [SerializeField] private Rigidbody m_Rigidbody;
-    [SerializeField] private GameObject m_Explosion;
+    [SerializeField] private GameObjectScriptablePool m_ExplosionScriptablePool;
 
     public void Push(Vector3 direction)
     {
@@ -30,8 +31,10 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //ObjecPool this
-        Instantiate(m_Explosion, transform.position, Quaternion.identity);
+        if (m_ExplosionScriptablePool != null)
+        {
+            m_ExplosionScriptablePool.Rent(true).transform.position = transform.position;
+        }
         Invoke(nameof(Sleep), 0.1f);
     }
 }

@@ -10,7 +10,7 @@ public class TowerController : MonoBehaviour
     [SerializeField] private float m_MaxRange = 10f;
     //private List<EnemyController> m_EnemyList = new List<EnemyController>();
     //private bool first = true;
-    private float shortestDistanceSqr = float.MaxValue;
+    private float m_ShortestDistanceSqr = float.MaxValue;
     private Vector3 m_LookDirection;
     private float m_ShootTimer = 0f;
     //private float m_AimTimer = 0f;
@@ -23,13 +23,13 @@ public class TowerController : MonoBehaviour
             foreach (EnemyController enemy in FindObjectsOfType<EnemyController>())
             {
                 float distanceSqr = (enemy.transform.position - m_TowerTop.transform.position).sqrMagnitude;
-                if (distanceSqr < shortestDistanceSqr)
+                if (distanceSqr < m_ShortestDistanceSqr)
                 {
-                    shortestDistanceSqr = distanceSqr;
+                    m_ShortestDistanceSqr = distanceSqr;
                     m_CurrentEnemy = enemy;
                 }
             }
-            shortestDistanceSqr = float.MaxValue;
+            m_ShortestDistanceSqr = float.MaxValue;
             //m_AimTimer = Random.Range(1f, 2f);
         }
 

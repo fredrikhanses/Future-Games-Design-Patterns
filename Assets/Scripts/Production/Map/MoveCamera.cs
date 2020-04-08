@@ -2,11 +2,11 @@
 
 public class MoveCamera : MonoBehaviour
 {
-    private Vector3 m_OriginalPosition;
+    private Vector3 m_InitialPosition;
 
     private void Awake()
     {
-        m_OriginalPosition = transform.position;
+        m_InitialPosition = transform.position;
     }
 
     public void MoveCameraToOrigin(Vector3 origin)
@@ -16,6 +16,6 @@ public class MoveCamera : MonoBehaviour
 
     public void ResetCameraPosition()
     {
-        transform.position = m_OriginalPosition;
+        transform.position = m_InitialPosition;
     }     
 }

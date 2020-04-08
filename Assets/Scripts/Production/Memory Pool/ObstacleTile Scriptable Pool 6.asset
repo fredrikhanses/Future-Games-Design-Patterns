@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf02840ded6e02c4aa1a59218c3a90fa, type: 3}
-  m_Name: Enemy Scriptable Pool
+  m_Name: ObstacleTile Scriptable Pool 6
   m_EditorClassIdentifier: 
-  m_Prefab: {fileID: 3358623668188840345, guid: 116fda0e5defb46aba819fdb1f4ec0bf,
+  m_Prefab: {fileID: 5807043221564994009, guid: 146d056a4463e4d4380e1679e4d2e16f,
     type: 3}
   m_InitSize: 20
   m_ExpandBy: 10
   m_HasParent: 1
-  m_ParentName: EnemyScriptablePool
+  m_ParentName: ObstacleScriptablePool

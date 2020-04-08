@@ -104,11 +104,11 @@ GameObject:
   - component: {fileID: 3062967066264252549}
   m_Layer: 0
   m_Name: Tile_Path_Model
-  m_TagString: Untagged
+  m_TagString: Path
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3062967066264252549
 Transform:
   m_ObjectHideFlags: 0

@@ -7,20 +7,20 @@ namespace Tools
 {
     public class ComponentPool<T> : IDisposable, IPool<T> where T : Component
     {
-        private bool disposed;
-        private readonly uint expandBy;
-        private readonly Stack<T> objects;
-        private readonly List<T> created;
-        private readonly T prefab;
-        private readonly Transform parent;
+        private bool m_Disposed;
+        private readonly uint m_ExpandBy;
+        private readonly Stack<T> m_Objects;
+        private readonly List<T> m_Created;
+        private readonly T m_Prefab;
+        private readonly Transform m_Parent;
 
         public ComponentPool(uint initSize, T prefab, uint expandBy, Transform parent = null)
         {
-            this.expandBy = expandBy;
-            this.prefab = prefab;
-            this.parent = parent;
-            objects = new Stack<T>();
-            created = new List<T>();
+            m_ExpandBy = expandBy;
+            m_Prefab = prefab;
+            m_Parent = parent;
+            m_Objects = new Stack<T>();
+            m_Created = new List<T>();
             Expand((uint)Mathf.Max(1f, initSize));
         }
 
@@ -28,35 +28,35 @@ namespace Tools
         {
             for (uint i = 0; i < expandBy; i++)
             {
-                T instance = Object.Instantiate<T>(prefab, parent);
+                T instance = Object.Instantiate<T>(m_Prefab, m_Parent);
                 instance.gameObject.AddComponent<EmitOnDisable>().OnDisableGameObject += UnRent;
-                objects.Push(instance);
-                created.Add(instance);
+                m_Objects.Push(instance);
+                m_Created.Add(instance);
             }
         }
 
         public T Rent(bool returnActive)
         {
-            if(objects.Count == 0)
+            if(m_Objects.Count == 0)
             {
-                Expand(expandBy);
+                Expand(m_ExpandBy);
             }
 
-            T instance = objects.Pop();
+            T instance = m_Objects.Pop();
             return instance;
         }
         
         private void UnRent(GameObject gameObject)
         {
-            if(disposed == false)
+            if(m_Disposed == false)
             {
-                objects.Push(gameObject.GetComponent<T>());
+                m_Objects.Push(gameObject.GetComponent<T>());
             }
         }
 
         public void Clean()
         {
-            foreach (T component in created)
+            foreach (T component in m_Created)
             {
                 if (component != null)
                 {
@@ -64,12 +64,12 @@ namespace Tools
                     Object.Destroy(component.gameObject);
                 }
             }
-            created.Clear();
-            objects.Clear();
+            m_Created.Clear();
+            m_Objects.Clear();
         }
         public void Dispose()
         {
-            disposed = true;
+            m_Disposed = true;
             Clean();
         }
     }

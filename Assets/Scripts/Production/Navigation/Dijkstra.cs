@@ -7,16 +7,16 @@ namespace AI
 {
     public class Dijkstra : IPathFinder
 	{
-		private HashSet<Vector2Int> accessibles;
-		private Queue<Vector2Int> frontier = new Queue<Vector2Int>();
-		private LinkedList<Vector2Int> path = new LinkedList<Vector2Int>();
-		private Vector2Int? current = new Vector2Int?();
-		private Dictionary<Vector2Int, Vector2Int?> ancestors = new Dictionary<Vector2Int, Vector2Int?>();
-		private Vector2Int next = new Vector2Int();
+		private HashSet<Vector2Int> m_Accessibles;
+		private Queue<Vector2Int> m_Frontier = new Queue<Vector2Int>();
+		private LinkedList<Vector2Int> m_Path = new LinkedList<Vector2Int>();
+		private Vector2Int? m_Current = new Vector2Int?();
+		private Dictionary<Vector2Int, Vector2Int?> m_Ancestors = new Dictionary<Vector2Int, Vector2Int?>();
+		private Vector2Int m_Next = new Vector2Int();
 
 		public Dijkstra(IEnumerable<Vector2Int> accessibles)
 		{
-			this.accessibles = new HashSet<Vector2Int>(accessibles);
+			m_Accessibles = new HashSet<Vector2Int>(accessibles);
 		}
 
 		public IEnumerable<Vector2Int> FindPath(Vector2Int start, Vector2Int goal)
@@ -24,31 +24,31 @@ namespace AI
 			Clear();
 			if (start.Equals(goal))
 			{
-				path.AddLast(start);
-				return path;
+				m_Path.AddLast(start);
+				return m_Path;
 			}
-			if(accessibles.Contains(start) && accessibles.Contains(goal))
+			if(m_Accessibles.Contains(start) && m_Accessibles.Contains(goal))
 			{
-				ancestors.Add(start, null);
-				frontier.Enqueue(start);
+				m_Ancestors.Add(start, null);
+				m_Frontier.Enqueue(start);
 			}
-			while (frontier.Any())
+			while (m_Frontier.Any())
 			{
-				current = frontier.Dequeue();
-				if (current.Equals(goal))
+				m_Current = m_Frontier.Dequeue();
+				if (m_Current.Equals(goal))
 				{
 					break;
 				}
 				CheckFrontier();
 			}
-			if (ancestors.ContainsKey(goal))
+			if (m_Ancestors.ContainsKey(goal))
 			{
-				while (current.HasValue)
+				while (m_Current.HasValue)
 				{
-					path.AddLast(current.Value);
-					current = ancestors[current.Value];
+					m_Path.AddLast(m_Current.Value);
+					m_Current = m_Ancestors[m_Current.Value];
 				}
-				return path.Reverse();
+				return m_Path.Reverse();
 			}
 			else
 			{
@@ -58,20 +58,20 @@ namespace AI
 		
 		void Clear()
 		{
-			frontier.Clear();
-			path.Clear();
-			ancestors.Clear();
+			m_Frontier.Clear();
+			m_Path.Clear();
+			m_Ancestors.Clear();
 		}
 
 		void CheckFrontier()
 		{
 			foreach (Vector2Int direction in DirectionTools.Dirs)
 			{
-				next = current.Value + direction;
-				if(accessibles.Contains(next) && !ancestors.ContainsKey(next))
+				m_Next = m_Current.Value + direction;
+				if(m_Accessibles.Contains(m_Next) && !m_Ancestors.ContainsKey(m_Next))
 				{
-					frontier.Enqueue(next);
-					ancestors[next] = current;
+					m_Frontier.Enqueue(m_Next);
+					m_Ancestors[m_Next] = m_Current;
 				}
 			}
 		}

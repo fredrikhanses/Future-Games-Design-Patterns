@@ -627,7 +627,7 @@ GameObject:
   - component: {fileID: 180533911}
   - component: {fileID: -625919847082908826}
   m_Layer: 0
-  m_Name: EnemyStrong_Model
+  m_Name: StrongEnemy_Model
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -679,10 +679,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84c0dab5040ea1548ab4a5dba91c3c0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 20
-  speed: 2
+  m_Health: 10
+  m_Speed: 2
   m_Rigidbody: {fileID: -625919847082908826}
   m_Player: {fileID: 0}
+  m_Animator: {fileID: 3358623668188840343}
 --- !u!54 &-625919847082908826
 Rigidbody:
   m_ObjectHideFlags: 0

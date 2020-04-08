@@ -5,26 +5,26 @@ using Tools;
 [MonoSingletonConfigurationAttribute(resourcesPath:"EnemyManager")]
 public class EnemyManager : MonoSingleton<EnemyManager>
 {
-    [SerializeField] private GameObjectScriptablePool m_StrongEnemyScriptablePool;
     [SerializeField] private GameObjectScriptablePool m_EnemyScriptablePool;
-
-    private EnemyController m_CurrentEnemyController;
+    [SerializeField] private GameObjectScriptablePool m_StrongEnemyScriptablePool;
+    
     private GameObject m_CurrentEnemy;
+    private EnemyController m_CurrentEnemyController;
     private GameObjectScriptablePool m_CurrentScriptablePool;
 
-    /// <summary>
-    ///    Creates an enemy at a specific position.
-    /// </summary>
-    public void CreateEnemy(Vector3 spawnPosition, LinkedList<Vector3> walkPoints)
+    /// <summary> Creates an enemy at a specific position and then makes it start moving along a path.</summary>
+    /// <param name="spawnPosition">Position to spawn the enemy at.</param>
+    /// <param name="path">Path that the enemy should move along.</param>
+    public void CreateEnemy(Vector3 spawnPosition, LinkedList<Vector3> path)
     {
-        SelectEnemy();
+        SelectScriptablePool();
         m_CurrentEnemy = m_CurrentScriptablePool.Rent(true);
         m_CurrentEnemyController = m_CurrentEnemy.GetComponent<EnemyController>();
         m_CurrentEnemyController.Reset(spawnPosition);
-        MoveStart(walkPoints);
+        MoveStart(path);
     }
 
-    private void SelectEnemy()
+    private void SelectScriptablePool()
     {
         System.Random random = new System.Random();
         int prefabIndex = random.Next(0, 3);
@@ -38,9 +38,9 @@ public class EnemyManager : MonoSingleton<EnemyManager>
         }
     }
 
-    private void MoveStart(LinkedList<Vector3> walkPoints)
+    private void MoveStart(LinkedList<Vector3> path)
     {
         m_CurrentEnemyController = m_CurrentEnemy.GetComponent<EnemyController>();
-        m_CurrentEnemyController.MoveStart(walkPoints);
+        m_CurrentEnemyController.MoveStart(path);
     }
 }

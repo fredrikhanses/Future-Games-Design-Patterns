@@ -3,8 +3,7 @@
 --- !u!1 &8706433728617951082
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2390328015633735266, guid: 8dc5fa288a042464392362d49acdb496,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
@@ -22,12 +21,11 @@ GameObject:
 --- !u!4 &8706433728617951083
 Transform:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2390328015633735268, guid: 8dc5fa288a042464392362d49acdb496,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8706433728617951082}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -37,8 +35,7 @@ Transform:
 --- !u!114 &8706433728617950997
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2390328015633735269, guid: 8dc5fa288a042464392362d49acdb496,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8706433728617951082}
@@ -47,16 +44,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68ff054e16b15f349b1f35932147a6bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  origin: {x: 0, y: 0, z: 0}
-  mapNumber: 3
-  generateMap: 0
-  playMap: 0
-  clearMap: 0
+  m_Origin: {x: 0, y: 0, z: 0}
+  m_MapNumber: 1
+  m_GenerateMap: 0
+  m_PlayMap: 0
+  m_ClearMap: 0
+  m_PathTileScriptablePool: {fileID: 11400000, guid: a1cfe2173c710bc47a2e70064c1f561b,
+    type: 2}
+  m_ObstacleTileScriptablePool: {fileID: 11400000, guid: 30cb9ff5b40fffe43a07040fc80adc9f,
+    type: 2}
+  m_BombTowerScriptablePool: {fileID: 11400000, guid: 2a51f3250adc2ae4f8fccf6bd6f19058,
+    type: 2}
+  m_FreezeTowerScriptablePool: {fileID: 11400000, guid: ea4371c533b70da45894a8171a76fa63,
+    type: 2}
+  m_EnemyBaseScriptablePool: {fileID: 11400000, guid: 6ddea9e6706b3304b99ad59cb2b793c9,
+    type: 2}
+  m_PlayerBaseScriptablePool: {fileID: 11400000, guid: 9833ddfd0934eaf4f9894bf6af965c36,
+    type: 2}
 --- !u!114 &8706433728617950996
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2390328015633735267, guid: 8dc5fa288a042464392362d49acdb496,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8706433728617951082}
@@ -65,22 +73,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f47c8c969b7ef4046b081a94b7d6d968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapReaderMonos:
-  - tileType: 0
-    prefab: {fileID: 8446340793006353421, guid: 3445e6bc04d6d478291c03e5d82bb4fc,
+  m_MapReaderMonos:
+  - m_TileType: 0
+    m_Prefab: {fileID: 8446340793006353421, guid: 3445e6bc04d6d478291c03e5d82bb4fc,
       type: 3}
-  - tileType: 1
-    prefab: {fileID: 5807043221564994009, guid: 146d056a4463e4d4380e1679e4d2e16f,
+  - m_TileType: 1
+    m_Prefab: {fileID: 5807043221564994009, guid: 146d056a4463e4d4380e1679e4d2e16f,
       type: 3}
-  - tileType: 2
-    prefab: {fileID: 5719485938209910767, guid: 9058376e4a8804756acc0e60103feae4,
+  - m_TileType: 2
+    m_Prefab: {fileID: 5719485938209910767, guid: 9058376e4a8804756acc0e60103feae4,
       type: 3}
-  - tileType: 3
-    prefab: {fileID: 5719485938209910767, guid: 011b7fb0ec2541a4a82c0b5ace5893cd,
+  - m_TileType: 3
+    m_Prefab: {fileID: 5719485938209910767, guid: 011b7fb0ec2541a4a82c0b5ace5893cd,
       type: 3}
-  - tileType: 4
-    prefab: {fileID: 6189042043493516721, guid: ddaec73c1732b4af4b5f402d92b9f36f,
+  - m_TileType: 4
+    m_Prefab: {fileID: 6189042043493516721, guid: ddaec73c1732b4af4b5f402d92b9f36f,
       type: 3}
-  - tileType: 5
-    prefab: {fileID: 6360046985728068882, guid: c6e46598445204935bcf241407b687d5,
+  - m_TileType: 5
+    m_Prefab: {fileID: 6360046985728068882, guid: c6e46598445204935bcf241407b687d5,
       type: 3}

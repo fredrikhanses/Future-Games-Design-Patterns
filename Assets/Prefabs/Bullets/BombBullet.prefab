@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2003933278}
   - component: {fileID: 80493522837173019}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: BombBullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,6 +68,8 @@ MonoBehaviour:
   m_Rigidbody: {fileID: 2573514706863841469}
   m_Explosion: {fileID: 4017425172858650090, guid: e14bcfb7d88c10b4ab96c7355232d0c2,
     type: 3}
+  m_ExplosionScriptablePool: {fileID: 11400000, guid: bbaad29de0268004cb3081792dc7c96e,
+    type: 2}
 --- !u!33 &2003933277
 MeshFilter:
   m_ObjectHideFlags: 0

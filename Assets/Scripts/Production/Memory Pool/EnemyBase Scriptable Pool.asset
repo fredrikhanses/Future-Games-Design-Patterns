@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf02840ded6e02c4aa1a59218c3a90fa, type: 3}
-  m_Name: Enemy Scriptable Pool
+  m_Name: EnemyBase Scriptable Pool
   m_EditorClassIdentifier: 
-  m_Prefab: {fileID: 3358623668188840345, guid: 116fda0e5defb46aba819fdb1f4ec0bf,
+  m_Prefab: {fileID: 6189042043493516721, guid: ddaec73c1732b4af4b5f402d92b9f36f,
     type: 3}
-  m_InitSize: 20
-  m_ExpandBy: 10
+  m_InitSize: 1
+  m_ExpandBy: 1
   m_HasParent: 1
-  m_ParentName: EnemyScriptablePool
+  m_ParentName: EnemyBaseScriptablePool

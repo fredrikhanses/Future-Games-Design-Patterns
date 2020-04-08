@@ -7,6 +7,12 @@ TagManager:
   - DontDestroy
   - Bullet
   - Enemy
+  - BombTower
+  - FreezeTower
+  - Path
+  - Obstacle
+  - EnemyBase
+  - PlayerBase
   layers:
   - Default
   - TransparentFX

@@ -16,7 +16,7 @@ public struct MapKeyData
 
 public class MapReader
 {
-    private readonly Dictionary<TileType, GameObject> m_PrefabsById; // Change to private
+    private readonly Dictionary<TileType, GameObject> m_PrefabsById;
     private readonly float displacement = 1f;
     private readonly Vector3 origin;
 

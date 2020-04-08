@@ -5,20 +5,19 @@ namespace Tools
 {
     public class TextHandler
     {
-        private StringBuilder stringBuilder = new StringBuilder();
-
-        private readonly string mapPath = "Assets/Resources/MapSettings/";
-        private readonly string textEnding = ".txt";
-        private string path;
+        private string m_Path;
+        private StringBuilder m_StringBuilder = new StringBuilder(); 
+        private const string k_MapPath = "Assets/Resources/MapSettings/";
+        private const string k_TextEnding = ".txt";
 
         public string ReadText(string name)
         {
-            stringBuilder.Append(mapPath);
-            stringBuilder.Append(name);
-            stringBuilder.Append(textEnding);
-            path = stringBuilder.ToString();
-            stringBuilder.Clear();
-            StreamReader reader = new StreamReader(path);
+            m_StringBuilder.Append(k_MapPath);
+            m_StringBuilder.Append(name);
+            m_StringBuilder.Append(k_TextEnding);
+            m_Path = m_StringBuilder.ToString();
+            m_StringBuilder.Clear();
+            StreamReader reader = new StreamReader(m_Path);
             string textContent = (reader.ReadToEnd());
             reader.Close();
             return textContent;
@@ -26,12 +25,12 @@ namespace Tools
         
         public void WriteText(string name, string textContent)
         {
-            stringBuilder.Append(mapPath);
-            stringBuilder.Append(name);
-            stringBuilder.Append(textEnding);
-            path = stringBuilder.ToString();
-            stringBuilder.Clear();
-            StreamWriter writer = new StreamWriter(path, true);
+            m_StringBuilder.Append(k_MapPath);
+            m_StringBuilder.Append(name);
+            m_StringBuilder.Append(k_TextEnding);
+            m_Path = m_StringBuilder.ToString();
+            m_StringBuilder.Clear();
+            StreamWriter writer = new StreamWriter(m_Path, true);
             writer.Write(textContent);
             writer.Close();
         }

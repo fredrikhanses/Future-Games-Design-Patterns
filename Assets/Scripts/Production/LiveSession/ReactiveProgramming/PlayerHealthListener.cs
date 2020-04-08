@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerHealthListener : MonoBehaviour
 {
-    [SerializeField] private Text textField;
+    [SerializeField] private Text m_TextField;
 
     [SerializeField] private Player m_Player;
     private IDisposable m_Subscription;
@@ -21,9 +21,9 @@ public class PlayerHealthListener : MonoBehaviour
 
     private void Start()
     {
-        if(textField == null)
+        if(m_TextField == null)
         {
-            textField = GetComponent<Text>();
+            m_TextField = GetComponent<Text>();
         }
         if (m_Player != null)
         {
@@ -45,7 +45,7 @@ public class PlayerHealthListener : MonoBehaviour
         //}
         //else
         //{
-            textField.text = playerHealth.ToString();
+            m_TextField.text = playerHealth.ToString();
         //}
     }
 }
