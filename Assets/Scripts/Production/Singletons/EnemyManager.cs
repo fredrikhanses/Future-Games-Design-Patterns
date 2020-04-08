@@ -21,7 +21,6 @@ public class EnemyManager : MonoSingleton<EnemyManager>
         m_CurrentEnemy = m_CurrentScriptablePool.Rent(true);
         m_CurrentEnemyController = m_CurrentEnemy.GetComponent<EnemyController>();
         m_CurrentEnemyController.Reset(spawnPosition);
-        m_CurrentEnemyController.transform.position = spawnPosition;
         MoveStart(walkPoints);
     }
 

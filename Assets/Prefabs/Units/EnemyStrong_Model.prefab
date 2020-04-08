@@ -628,7 +628,7 @@ GameObject:
   - component: {fileID: -625919847082908826}
   m_Layer: 0
   m_Name: EnemyStrong_Model
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -682,6 +682,7 @@ MonoBehaviour:
   health: 20
   speed: 2
   m_Rigidbody: {fileID: -625919847082908826}
+  m_Player: {fileID: 0}
 --- !u!54 &-625919847082908826
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -690,7 +691,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3358623668188840345}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0

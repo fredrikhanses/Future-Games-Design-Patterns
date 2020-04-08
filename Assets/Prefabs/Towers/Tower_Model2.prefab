@@ -299,6 +299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Weapon: {fileID: 8449660721473253990}
   m_TowerTop: {fileID: 7391422965515881056}
+  m_MaxRange: 10
 --- !u!1 &7391422965515881056
 GameObject:
   m_ObjectHideFlags: 0

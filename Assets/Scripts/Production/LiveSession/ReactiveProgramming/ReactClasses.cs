@@ -5,9 +5,45 @@ namespace Tools
 {
     public static class ObservableExtensions
     {
-        public static IDisposable Subscribe<T>(this IObservable<T> observable, Action<T> onNext)
+        public static IDisposable Subscribe<T>(this IObservable<T> observable, Action<T> onNext, bool notifyOnSubscribe = true)
         {
-            return observable.Subscribe(new ActionToObserver<T>(onNext));
+            IObserver<T> observer = new ActionToObserver<T>(onNext);
+            return observable.Subscribe(observer, notifyOnSubscribe);
+        }
+
+        public static IDisposable Subscribe<T>(this IObservable<T> observable, IObserver<T> observer, bool notifyOnSubscribe = true)
+        {
+            if (notifyOnSubscribe)
+            {
+                return observable.Subscribe(observer);
+            }
+            else
+            {
+                return observable.Subscribe(new SkipFirstNotificationObserver<T>(observer));
+            }
+        }
+    }
+
+    public class SkipFirstNotificationObserver<T> : IObserver<T>
+    {
+        private bool m_IsFirstTime = true;
+        private readonly IObserver<T> m_InnerObserver;
+        public SkipFirstNotificationObserver(IObserver<T> innerObserver)
+        {
+            m_InnerObserver = innerObserver;
+        }
+        public void OnCompleted() { }
+        public void OnError(Exception error) { }
+        public void OnNext(T value)
+        {
+            if (m_IsFirstTime)
+            {
+                m_IsFirstTime = false;
+            }
+            else
+            {
+                m_InnerObserver.OnNext(value);
+            }
         }
     }
 
@@ -32,6 +68,7 @@ namespace Tools
 
     public class ObservableProperty<T> : IObservable<T>
     {
+        private bool m_IsInitialised;
         private T m_Value;
         private readonly Subject<T> m_Subject = new Subject<T>();
 
@@ -40,7 +77,8 @@ namespace Tools
             get => m_Value;
             set
             {
-                if(EqualityComparer<T>.Default.Equals(m_Value, value) == false)
+                m_IsInitialised = true;
+                if (EqualityComparer<T>.Default.Equals(m_Value, value) == false)
                 {
                     Value = m_Value;
                     m_Subject.OnNext(m_Value);
@@ -50,9 +88,23 @@ namespace Tools
 
         public IDisposable Subscribe(IObserver<T> observer)
         {
-            return m_Subject.Subscribe(observer);
+            IDisposable subscription = null;
+            try
+            {
+                if(m_IsInitialised)
+                {
+                    observer.OnNext(m_Value);
+                }
+            }
+            finally
+            {
+                subscription = m_Subject.Subscribe(observer);
+            }
+            return subscription;
         }
     }
+
+    public interface ISubject<T> : IObservable<T>, IObserver<T> { }
 
     public class Subject<T> : ISubject<T>
     {
@@ -85,15 +137,15 @@ namespace Tools
         public IDisposable Subscribe(IObserver<T> observer)
         {
             m_Observers.Add(observer);
-            return new Subscribtion(m_Observers, observer);
+            return new Subscription(m_Observers, observer);
         }
 
-        private class Subscribtion : IDisposable
+        private class Subscription : IDisposable
         {
             private readonly List<IObserver<T>> m_Observers;
             private readonly IObserver<T> m_Observer;
 
-            public Subscribtion(List<IObserver<T>> observers, IObserver<T> observer)
+            public Subscription(List<IObserver<T>> observers, IObserver<T> observer)
             {
                 m_Observers = observers;
                 m_Observer = observer;
@@ -117,6 +169,4 @@ namespace Tools
             subscription.Dispose();
         }
     }
-
-    public interface ISubject<T> : IObservable<T>, IObserver<T> { }
 }

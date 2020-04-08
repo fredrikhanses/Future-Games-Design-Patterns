@@ -3,9 +3,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public ObservableProperty<int> Health = new ObservableProperty<int>();
-    public ObservableProperty<string> Name = new ObservableProperty<string>();
-   
+    [SerializeField] private int m_InitHealth;
+    public ObservableProperty<int> Health { get; } = new ObservableProperty<int>();
+    public ObservableProperty<string> Name { get; } = new ObservableProperty<string>();
+
+    private void Start()
+    {
+        Health.Value = m_InitHealth;    
+    }
+
     [ContextMenu("Increase Health")]
     public void IncreaseHealth()
     {

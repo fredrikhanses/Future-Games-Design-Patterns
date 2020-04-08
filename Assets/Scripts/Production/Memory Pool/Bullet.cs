@@ -32,6 +32,6 @@ public class Bullet : MonoBehaviour
     {
         //ObjecPool this
         Instantiate(m_Explosion, transform.position, Quaternion.identity);
-        gameObject.SetActive(false);
+        Invoke(nameof(Sleep), 0.1f);
     }
 }

@@ -7,15 +7,15 @@ public class PlayerHealthListener : MonoBehaviour
 {
     [SerializeField] private Text textField;
 
-    private Player player;
-    private IDisposable subscription;
-    private string playerDied = "Player Died";
+    [SerializeField] private Player m_Player;
+    private IDisposable m_Subscription;
+    private string m_PlayerDied = "Player Died";
 
     private void OnEnable()
     {
-        if (player != null)
+        if (m_Player != null)
         {
-            subscription = player.Health.Subscribe(UpdateTextField);
+            m_Subscription = m_Player.Health.Subscribe(UpdateTextField);
         }
     }
 
@@ -25,27 +25,27 @@ public class PlayerHealthListener : MonoBehaviour
         {
             textField = GetComponent<Text>();
         }
-        player = FindObjectOfType<Player>();
-        if (player != null)
+        if (m_Player != null)
         {
-            subscription = player.Health.Subscribe(UpdateTextField);
+            m_Player = FindObjectOfType<Player>();
+            m_Subscription = m_Player.Health.Subscribe(UpdateTextField);
         }
     }
 
     private void OnDisable()
     {
-        subscription.Dispose();
+        m_Subscription?.Dispose();
     }
 
     private void UpdateTextField(int playerHealth)
     {
-        if (playerHealth <= 0)
-        {
-            textField.text = playerDied;
-        }
-        else
-        {
+        //if (playerHealth <= 0)
+        //{
+        //    textField.text = m_PlayerDied;
+        //}
+        //else
+        //{
             textField.text = playerHealth.ToString();
-        }
+        //}
     }
 }

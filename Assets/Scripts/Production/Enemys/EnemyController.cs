@@ -2,11 +2,13 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(Animator))]
+[SelectionBase]
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private int health = 10;
     [SerializeField] private float speed = 2f;
-    [SerializeField] Rigidbody m_Rigidbody;
+    [SerializeField] private Rigidbody m_Rigidbody;
+    [SerializeField] private Player m_Player;
 
     private int m_OriginalHealth;
     private float groundHeight = 0.8f;
@@ -27,6 +29,10 @@ public class EnemyController : MonoBehaviour
         if(m_Animator == null)
         {
             m_Animator = GetComponent<Animator>();
+        }
+        if (m_Player == null)
+        {
+            m_Player = FindObjectOfType<Player>();
         }
         m_OriginalHealth = health;
     }
@@ -116,7 +122,7 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            //DamagePlayer
+            m_Player.DecreaseHealth();
             Sleep(); 
         }
     }

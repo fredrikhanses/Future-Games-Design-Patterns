@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minSpeed: 10
-  maxSpeed: 20
+  maxSpeed: 30
   m_Rigidbody: {fileID: 2573514706863841469}
   m_Explosion: {fileID: 4017425172858650090, guid: e14bcfb7d88c10b4ab96c7355232d0c2,
     type: 3}
