@@ -11,6 +11,9 @@ public class EnemyManager : MonoSingleton<EnemyManager>
     private GameObject m_CurrentEnemy;
     private EnemyController m_CurrentEnemyController;
     private GameObjectScriptablePool m_CurrentScriptablePool;
+    private HashSet<EnemyController> m_EnemyControllers = new HashSet<EnemyController>();
+
+    public HashSet<EnemyController> EnemyControllers { get => m_EnemyControllers; }
 
     /// <summary> Creates an enemy at a specific position and then makes it start moving along a path.</summary>
     /// <param name="spawnPosition">Position to spawn the enemy at.</param>
@@ -21,6 +24,10 @@ public class EnemyManager : MonoSingleton<EnemyManager>
         m_CurrentEnemy = m_CurrentScriptablePool.Rent(true);
         m_CurrentEnemyController = m_CurrentEnemy.GetComponent<EnemyController>();
         m_CurrentEnemyController.Reset(spawnPosition);
+        if (EnemyControllers.Contains(m_CurrentEnemyController) == false)
+        {
+            EnemyControllers.Add(m_CurrentEnemyController);
+        }
         MoveStart(path);
     }
 

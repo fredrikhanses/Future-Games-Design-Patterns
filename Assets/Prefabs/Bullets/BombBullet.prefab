@@ -63,11 +63,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e6f448840c201c4e8bb5133cd4f91c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minSpeed: 10
-  maxSpeed: 30
+  minSpeed: 1
+  maxSpeed: 5
   m_Rigidbody: {fileID: 2573514706863841469}
-  m_Explosion: {fileID: 4017425172858650090, guid: e14bcfb7d88c10b4ab96c7355232d0c2,
-    type: 3}
   m_ExplosionScriptablePool: {fileID: 11400000, guid: bbaad29de0268004cb3081792dc7c96e,
     type: 2}
 --- !u!33 &2003933277

@@ -37,13 +37,6 @@ namespace Tools
         };
         private const string k_DontDestroy = "DontDestroy";
 
-        private void Awake()
-        {
-            m_MapReaderMono = GetComponent<MapReaderMono>();
-            m_MainCamera = Camera.main;
-            m_MoveCamera = m_MainCamera.GetComponent<MoveCamera>();
-        }
-
         private void OnValidate()
         {
             if (m_GenerateMap && Application.isPlaying && m_MapData.MapLayout.Count <= 0)
@@ -77,16 +70,22 @@ namespace Tools
 
         private void Start()
         {
+            m_MapReaderMono = GetComponent<MapReaderMono>();
+            m_MainCamera = Camera.main;
+            m_MoveCamera = m_MainCamera.GetComponent<MoveCamera>();
             GenerateMap();
         }
 
         private void FixedUpdate()
         {
-            m_SpawnInterval -= Time.fixedDeltaTime;
-            if(m_SpawnInterval <= 0f)
+            if (m_MapData.MapLayout.Count > 0)
             {
-                PlayMap();
-                m_SpawnInterval = Random.Range(1f, 3f);
+                m_SpawnInterval -= Time.fixedDeltaTime;
+                if (m_SpawnInterval <= 0f)
+                {
+                    PlayMap();
+                    m_SpawnInterval = Random.Range(1f, 3f);
+                }
             }
         }
 

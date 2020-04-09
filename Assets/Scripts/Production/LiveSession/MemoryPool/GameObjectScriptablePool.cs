@@ -11,6 +11,7 @@ namespace Tools
         [SerializeField] private bool m_HasParent;
         [SerializeField] private string m_ParentName;
 
+        private const string k_DontDestroy = "DontDestroy";
         private GameObjectPool m_InternalPool;
 
         public GameObject Prefab { get => m_Prefab; }
@@ -23,6 +24,7 @@ namespace Tools
                 if (m_HasParent)
                 {
                     parent = new GameObject(m_ParentName).transform;
+                    parent.tag = k_DontDestroy;
                 }
                 m_InternalPool = new GameObjectPool(m_InitSize, Prefab, m_ExpandBy, parent);
             }
