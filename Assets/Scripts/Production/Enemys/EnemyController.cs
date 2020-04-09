@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private int m_Health;
+    [SerializeField] private int m_Damage;
     [SerializeField] private float m_Speed;
     [SerializeField] private Rigidbody m_Rigidbody;
     [SerializeField] private Player m_Player;
@@ -118,7 +119,7 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            m_Player.DecreaseHealth();
+            m_Player.Damage(m_Damage);
             Sleep(); 
         }
     }

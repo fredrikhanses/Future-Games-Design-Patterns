@@ -13,6 +13,7 @@ TagManager:
   - Obstacle
   - EnemyBase
   - PlayerBase
+  - ScriptablePool
   layers:
   - Default
   - TransparentFX

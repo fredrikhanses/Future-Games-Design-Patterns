@@ -37,11 +37,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        Health = m_InitHealth;
-    }
-
     [ContextMenu("Reset Health")]
     public void ResetHealth()
     {
@@ -61,6 +56,14 @@ public class Player : MonoBehaviour
         {
             Health--;
         } 
+    }
+
+    public void Damage(int damage)
+    {
+        if (Health > 0)
+        {
+            Health -= damage;
+        }
     }
 }
 

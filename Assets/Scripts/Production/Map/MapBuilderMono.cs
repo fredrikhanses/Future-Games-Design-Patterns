@@ -11,6 +11,7 @@ namespace Tools
         [SerializeField, Tooltip("Only works in Play Mode")] private bool m_GenerateMap;
         [SerializeField, Tooltip("Only works in Play Mode")] private bool m_PlayMap;
         [SerializeField, Tooltip("Only works in Play Mode")] private bool m_ClearMap;
+        [SerializeField, Tooltip("Only works in Play Mode")] private bool m_PauseGame;
         [SerializeField] private GameObjectScriptablePool m_PathTileScriptablePool;
         [SerializeField] private GameObjectScriptablePool m_ObstacleTileScriptablePool;
         [SerializeField] private GameObjectScriptablePool m_BombTowerScriptablePool;
@@ -20,6 +21,7 @@ namespace Tools
 
         private float m_SpawnInterval = 1f;
         private float m_TileDisplacement = 2.0f;
+        private float m_OriginalTimeScale;
         private string m_MapName;
         private Camera m_MainCamera;
         private MoveCamera m_MoveCamera;
@@ -36,6 +38,7 @@ namespace Tools
             { 4, "map_4" }
         };
         private const string k_DontDestroy = "DontDestroy";
+        private const string k_ScriptablePool = "ScriptablePool";
 
         private void OnValidate()
         {
@@ -50,6 +53,7 @@ namespace Tools
             }
             if (m_ClearMap && Application.isPlaying && m_MapData.MapLayout.Count > 0)
             {
+                Time.timeScale = m_OriginalTimeScale;
                 ClearMap();
                 m_ClearMap = false;
             }
@@ -66,10 +70,23 @@ namespace Tools
             {
                 m_PlayMap = false;
             }
+            if (m_PauseGame && Application.isPlaying && m_MapData.MapLayout.Count > 0)
+            {
+                Time.timeScale = 0;
+            }
+            else if(!m_PauseGame && Application.isPlaying && m_MapData.MapLayout.Count > 0)
+            {
+                Time.timeScale = m_OriginalTimeScale;
+            }
+            else if(m_PauseGame)
+            {
+                m_PauseGame = false;
+            }
         }
 
         private void Start()
         {
+            m_OriginalTimeScale = Time.timeScale;
             m_MapReaderMono = GetComponent<MapReaderMono>();
             m_MainCamera = Camera.main;
             m_MoveCamera = m_MainCamera.GetComponent<MoveCamera>();
@@ -180,6 +197,10 @@ namespace Tools
                 {
                     gameObject.SetActive(false);
                 }
+                //if(gameObject.CompareTag(k_ScriptablePool))
+                //{
+                //    gameObject.SetActive(true);
+                //}
             }
             m_MapData.ClearLists();
             m_MoveCamera.ResetCameraPosition();

@@ -10,10 +10,6 @@ public class PlayerHealthListener : MonoBehaviour
     private Player m_Player;
     private string m_PlayerDied = "Player Died";
 
-    private void Awake()
-    {
-    }
-
     private void OnEnable()
     {
         if (m_Player != null)
@@ -21,6 +17,7 @@ public class PlayerHealthListener : MonoBehaviour
             m_Player.OnPlayerHealthChanged += UpdateTextField;
         }
     }
+
     private void Start()
     {
         if (m_TextField == null)
@@ -29,6 +26,7 @@ public class PlayerHealthListener : MonoBehaviour
         }
         m_Player = FindObjectOfType<Player>();
         m_Player.OnPlayerHealthChanged += UpdateTextField;
+        m_Player.ResetHealth();
     }
 
     private void OnDisable()
@@ -52,6 +50,7 @@ public class PlayerHealthListener : MonoBehaviour
     private void GameOverScreen()
     {
         m_TextField.text = "GAME OVER";
+        Time.timeScale = 0;
     }
 }
 

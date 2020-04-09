@@ -68,6 +68,8 @@ MonoBehaviour:
   m_Rigidbody: {fileID: 2573514706863841469}
   m_ExplosionScriptablePool: {fileID: 11400000, guid: bbaad29de0268004cb3081792dc7c96e,
     type: 2}
+  m_ExplosionRadiusScriptablePool: {fileID: 11400000, guid: bfd3d1b1494eac34f9727d3a4b66c01c,
+    type: 2}
 --- !u!33 &2003933277
 MeshFilter:
   m_ObjectHideFlags: 0

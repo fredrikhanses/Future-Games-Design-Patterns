@@ -680,6 +680,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Health: 10
+  m_Damage: 2
   m_Speed: 2
   m_Rigidbody: {fileID: -625919847082908826}
   m_Player: {fileID: 0}

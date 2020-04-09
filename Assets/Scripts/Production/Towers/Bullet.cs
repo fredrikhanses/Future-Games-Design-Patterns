@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float maxSpeed;
     [SerializeField] private Rigidbody m_Rigidbody;
     [SerializeField] private GameObjectScriptablePool m_ExplosionScriptablePool;
+    [SerializeField] private GameObjectScriptablePool m_ExplosionRadiusScriptablePool;
 
     public void Push(Vector3 direction)
     {
@@ -31,10 +32,11 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (m_ExplosionScriptablePool != null)
+        if (m_ExplosionScriptablePool != null && m_ExplosionRadiusScriptablePool != null)
         {
             m_ExplosionScriptablePool.Rent(true).transform.position = transform.position;
+            m_ExplosionRadiusScriptablePool.Rent(true).transform.position = transform.position;
         }
-        Invoke(nameof(Sleep), 0.1f);
+        Invoke(nameof(Sleep), 0.0f);
     }
 }
