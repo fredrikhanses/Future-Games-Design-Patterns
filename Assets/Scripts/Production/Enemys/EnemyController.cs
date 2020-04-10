@@ -163,4 +163,21 @@ public class EnemyController : MonoBehaviour
             }
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag(k_Bullet) && m_Health > 0)
+        {
+            m_Health--;
+            if (m_Health <= 0)
+            {
+                m_Animator.SetBool(k_Killed, true);
+                Invoke(nameof(Sleep), k_KillDelay);
+            }
+            else
+            {
+                m_Animator.SetBool(k_Damaged, true);
+            }
+        }
+    }
 }

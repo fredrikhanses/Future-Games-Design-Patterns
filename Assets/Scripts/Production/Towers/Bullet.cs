@@ -1,6 +1,15 @@
 ﻿using Tools;
 using UnityEngine;
 
+public interface IBullet
+{
+    void Push();
+    void Reset();
+    void Sleep();
+    void OnDisable();
+    void OnTriggerEnter(Collider other);
+}
+
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private float minSpeed;

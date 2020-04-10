@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8721659744675678382
+--- !u!1 &7706755410292024836
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7970957587214492426}
-  - component: {fileID: 4143824124094360371}
+  - component: {fileID: 836805506015355625}
+  - component: {fileID: 6993385498742326189}
+  - component: {fileID: -7651983863711883298}
   m_Layer: 0
-  m_Name: Weapon
+  m_Name: BombWeapon
   m_TagString: Untagged
-  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7970957587214492426
+--- !u!4 &836805506015355625
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8721659744675678382}
+  m_GameObject: {fileID: 7706755410292024836}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,17 +32,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4143824124094360371
+--- !u!114 &6993385498742326189
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8721659744675678382}
+  m_GameObject: {fileID: 7706755410292024836}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4798360a416ccb468d8c102419f92c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BulletScriptablePool: {fileID: 11400000, guid: 548200143ec8320438463c3ee58c3337,
+--- !u!114 &-7651983863711883298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7706755410292024836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a426d1d11fb433b4a8b6dbce2d313a63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BombBulletScriptablePool: {fileID: 11400000, guid: 548200143ec8320438463c3ee58c3337,
     type: 2}

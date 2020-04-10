@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf02840ded6e02c4aa1a59218c3a90fa, type: 3}
-  m_Name: Bullet Scriptable Pool
+  m_Name: BombBullet Scriptable Pool
   m_EditorClassIdentifier: 
   m_Prefab: {fileID: 1187884266885560945, guid: 31c7796ecda363b4682ee1ea0019adaf,
     type: 3}
   m_InitSize: 20
   m_ExpandBy: 10
   m_HasParent: 1
-  m_ParentName: BulletScriptablePool
+  m_ParentName: BombBulletScriptablePool

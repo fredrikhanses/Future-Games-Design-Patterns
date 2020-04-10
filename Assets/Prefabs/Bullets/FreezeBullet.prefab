@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &225077031991834576
 Transform:
   m_ObjectHideFlags: 0
@@ -111,6 +111,7 @@ MonoBehaviour:
   maxSpeed: 30
   m_Rigidbody: {fileID: 7194902422220571885}
   m_ExplosionScriptablePool: {fileID: 0}
+  m_ExplosionRadiusScriptablePool: {fileID: 0}
 --- !u!54 &7194902422220571885
 Rigidbody:
   m_ObjectHideFlags: 0

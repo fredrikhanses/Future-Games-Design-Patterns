@@ -14,11 +14,14 @@ public class TowerController : MonoBehaviour
         float shortestDistanceSqr = float.MaxValue;
         foreach (EnemyController enemy in EnemyManager.Instance.EnemyControllers)
         {
-            float distanceSqr = (enemy.transform.position - m_TowerTop.transform.position).sqrMagnitude;
-            if (distanceSqr <= m_MaxRange * m_MaxRange && distanceSqr < shortestDistanceSqr)
+            if (enemy.isActiveAndEnabled)
             {
-                shortestDistanceSqr = distanceSqr;
-                m_CurrentEnemy = enemy;
+                float distanceSqr = (enemy.transform.position - m_TowerTop.transform.position).sqrMagnitude;
+                if (distanceSqr <= m_MaxRange * m_MaxRange && distanceSqr < shortestDistanceSqr)
+                {
+                    shortestDistanceSqr = distanceSqr;
+                    m_CurrentEnemy = enemy;
+                }
             }
         }
     }
