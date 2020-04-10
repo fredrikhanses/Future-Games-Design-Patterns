@@ -9,14 +9,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 225077031991834576}
+  - component: {fileID: 1980431215705088732}
+  - component: {fileID: 3989731211014717874}
   - component: {fileID: 225077031991834591}
   - component: {fileID: 225077031991834590}
   - component: {fileID: 1231722104280273400}
-  - component: {fileID: 1980431215705088732}
   - component: {fileID: 7194902422220571885}
   m_Layer: 0
   m_Name: FreezeBullet
-  m_TagString: Untagged
+  m_TagString: Freeze
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35,6 +36,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1980431215705088732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225077031991834588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e6f448840c201c4e8bb5133cd4f91c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSpeed: 1
+  m_MaxSpeed: 5
+  m_Lifetime: 2
+  m_Rigidbody: {fileID: 7194902422220571885}
+--- !u!114 &3989731211014717874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225077031991834588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 769f432ac2818f547a837850be3b174d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!33 &225077031991834591
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -95,23 +124,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1980431215705088732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 225077031991834588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e6f448840c201c4e8bb5133cd4f91c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minSpeed: 10
-  maxSpeed: 30
-  m_Rigidbody: {fileID: 7194902422220571885}
-  m_ExplosionScriptablePool: {fileID: 0}
-  m_ExplosionRadiusScriptablePool: {fileID: 0}
 --- !u!54 &7194902422220571885
 Rigidbody:
   m_ObjectHideFlags: 0

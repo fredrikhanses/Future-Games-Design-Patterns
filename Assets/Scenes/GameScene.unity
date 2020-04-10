@@ -262,6 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TextField: {fileID: 1001263226}
+  m_GameOverDelay: 2
 --- !u!114 &1001263226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -551,7 +552,7 @@ PrefabInstance:
     - target: {fileID: 1979498732791260404, guid: 1a5026ed2a8577c428a8d9e57f6f4845,
         type: 3}
       propertyPath: m_InitHealth
-      value: 1
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1979498732791260406, guid: 1a5026ed2a8577c428a8d9e57f6f4845,
         type: 3}
@@ -695,6 +696,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_MapNumber
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706433728617950997, guid: 7a1c7fe791622f34483b00d5c0e508a9,
+        type: 3}
+      propertyPath: m_MinSpawnInterval
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706433728617950997, guid: 7a1c7fe791622f34483b00d5c0e508a9,
+        type: 3}
+      propertyPath: m_MaxSpawnInterval
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8706433728617951082, guid: 7a1c7fe791622f34483b00d5c0e508a9,
         type: 3}

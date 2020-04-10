@@ -38,11 +38,7 @@ public class MapReader
 
     private readonly char[] m_MapSeparatorChar = { '#' };
     private readonly char[] m_LineSeparatorChar = { '\n' };
-    private string m_MapContent;
-    private string[] m_MapHolder;
-    private int m_MapSizeX;
-    private int m_MapSizeY;
-    private int m_Id;
+    private readonly char[] m_EnemyTypeSeparatorChar = { ' ' };
     private float m_GroundHeight = 0.8f;
     private readonly TextHandler m_TextHandler = new TextHandler();
     private readonly MapData m_MapData = new MapData();
@@ -63,36 +59,36 @@ public class MapReader
     public MapData ReadMap(string mapName)
     {
         m_MapData.ClearLists();
-        m_MapContent = GetMap(mapName);
-        m_MapHolder = m_MapContent.Split(m_LineSeparatorChar, StringSplitOptions.RemoveEmptyEntries);
-        foreach (string line in m_MapHolder)
+        string map = GetMap(mapName);
+        string[] lines = map.Split(m_LineSeparatorChar, StringSplitOptions.RemoveEmptyEntries);
+        foreach (string line in lines)
         {
             line.ToCharArray();
         }
-        m_MapSizeX = m_MapHolder[0].Length;
-        m_MapSizeY = m_MapHolder.Length;
-        for (int y = m_MapSizeY - 1; y >= 0; y--)
+        int mapSizeX = lines[0].Length;
+        int mapSizeY = lines.Length;
+        for (int y = mapSizeY - 1; y >= 0; y--)
         {
-            for (int x = 0; x < m_MapSizeX - 1; x++)
+            for (int x = 0; x < mapSizeX - 1; x++)
             {
                 m_CurrentWorldPosition.x = x * m_Displacement + m_Origin.x;
                 m_CurrentWorldPosition.y = m_Origin.y;
                 m_CurrentWorldPosition.z = -y * m_Displacement + m_Origin.z;
-                m_Id = (int)char.GetNumericValue(m_MapHolder[y][x]);
-                if (m_Id.Equals((int)WalkableTileNames.Path) || m_Id.Equals((int)WalkableTileNames.Start) || m_Id.Equals((int)WalkableTileNames.End))
+                int id = (int)char.GetNumericValue(lines[y][x]);
+                if (id.Equals((int)WalkableTileNames.Path) || id.Equals((int)WalkableTileNames.Start) || id.Equals((int)WalkableTileNames.End))
                 {
                     m_CurrentWalkableTilePosition.x = x;
                     m_CurrentWalkableTilePosition.y = -y;
                     m_MapData.WalkableTiles.Add(m_CurrentWalkableTilePosition);
                     m_MapData.MapPositions.Add(new KeyValuePair<Vector2Int, Vector3>(m_CurrentWalkableTilePosition, m_CurrentWorldPosition));
-                    if (m_Id.Equals((int)WalkableTileNames.Start))
+                    if (id.Equals((int)WalkableTileNames.Start))
                     {
                         m_EnemySpawnWorldPosition = m_CurrentWorldPosition;
                         m_EnemySpawnWorldPosition.y += m_GroundHeight;
                         m_MapData.EnemySpawnWorldPosition = m_EnemySpawnWorldPosition;
                         m_MapData.EnemySpawnTilePosition = m_CurrentWalkableTilePosition;
                     }
-                    if (m_Id.Equals((int)WalkableTileNames.End))
+                    if (id.Equals((int)WalkableTileNames.End))
                     {
                         m_MapData.PlayerBaseWorldPosition = m_CurrentWorldPosition;
                         m_MapData.PlayerBaseTilePosition = m_CurrentWalkableTilePosition;
@@ -103,7 +99,7 @@ public class MapReader
                 /// </summary>
                 if (m_PrefabsById != null)
                 {
-                    TileType tileType = TileMethods.TypeById[m_Id];
+                    TileType tileType = TileMethods.TypeById[id];
                     m_MapData.MapLayout.Add(new KeyValuePair<Vector3, GameObject>(m_CurrentWorldPosition, m_PrefabsById[tileType]));
                 }
             }
@@ -113,8 +109,24 @@ public class MapReader
 
     private string GetMap(string mapName)
     {
-        m_MapContent = m_TextHandler.ReadText(mapName);
-        m_MapHolder = m_MapContent.Split(m_MapSeparatorChar, StringSplitOptions.RemoveEmptyEntries);
-        return m_MapHolder[0];
+        string mapContent = m_TextHandler.ReadText(mapName);
+        string[] mapHolder = mapContent.Split(m_MapSeparatorChar, StringSplitOptions.RemoveEmptyEntries);
+        CalculateWaveData(mapHolder[1]);
+        return mapHolder[0];
+    }
+
+    private void CalculateWaveData(string waveData)
+    {
+        string[] waves = waveData.Split(m_LineSeparatorChar, StringSplitOptions.RemoveEmptyEntries);
+        foreach (string wave in waves)
+        {
+            string[] numberInWave = wave.Split(m_EnemyTypeSeparatorChar, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string number in numberInWave)
+            {
+                int.TryParse(number, out int result);
+                m_MapData.EnemyWaves.Enqueue(result);
+            }
+        }
+        m_MapData.EnemyWaves.Dequeue();
     }
 }

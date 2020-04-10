@@ -44,11 +44,21 @@ public class PlayerHealthListener : MonoBehaviour
         {
             m_TextField.text = playerHealth.ToString();
         }
+        if (playerHealth >= 100)
+        {
+            Invoke(nameof(WinScreen), m_GameOverDelay);
+        }
+    }
+     
+    private void WinScreen()
+    {
+        m_TextField.text = "PLAYER WINS";
+        Time.timeScale = 0f;
     }
 
     private void GameOverScreen()
     {
         m_TextField.text = "GAME OVER";
-        Time.timeScale = 0;
+        Time.timeScale = 0f;
     }
 }

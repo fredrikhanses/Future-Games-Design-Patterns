@@ -15,6 +15,7 @@ public class EnemyController : MonoBehaviour
     private bool m_Move;
     private bool m_Stop;
     private int m_InitialHealth;
+    private float m_InitialSpeed;
     private Vector3 m_TargetPosition;
     private Vector3 m_Direction;
     private LinkedList<Vector3> m_Path;
@@ -25,6 +26,7 @@ public class EnemyController : MonoBehaviour
     private const string k_IsWalking = "isWalking";
     private const string k_Damaged = "Damaged";
     private const string k_Bullet = "Bullet";
+    private const string k_Freeze = "Freeze";
 
     private void Awake()
     {
@@ -41,6 +43,7 @@ public class EnemyController : MonoBehaviour
             m_Player = FindObjectOfType<Player>();
         }
         m_InitialHealth = m_Health;
+        m_InitialSpeed = m_Speed;
     }
 
     private void FixedUpdate()
@@ -65,15 +68,15 @@ public class EnemyController : MonoBehaviour
 
     /// <summary> Start enemy movement along path.</summary>
     /// <param name="path">Path to walk along.</param>
-    public void MoveStart(LinkedList<Vector3> path)
+    public void MoveStart(IEnumerable<Vector3> path)
     {
-        if(path.Count > 0)
-        {      
-            m_Path = new LinkedList<Vector3>(path);
+        m_Path = new LinkedList<Vector3>(path);
+        if(m_Path.Count > 0)
+        {
             //Remove spawnPosition.
-            m_Path.RemoveFirst(); 
+            m_Path.RemoveFirst();
             MoveTo(m_Path.First.Value);
-            m_Path.RemoveFirst(); 
+            m_Path.RemoveFirst();
         }
     }
     
@@ -119,7 +122,7 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            m_Player.Damage(m_Damage);
+            m_Player.DoDamage(m_Damage);
             Sleep(); 
         }
     }
@@ -130,6 +133,7 @@ public class EnemyController : MonoBehaviour
     {
         m_Rigidbody.velocity = Vector3.zero;
         m_Health = m_InitialHealth;
+        m_Speed = m_InitialSpeed;
         m_Animator.SetBool(k_Killed, false);
         m_Animator.SetBool(k_IsWalking, true);
         m_Animator.SetBool(k_Damaged, false);
@@ -147,9 +151,14 @@ public class EnemyController : MonoBehaviour
         CancelInvoke(nameof(Sleep));
     }
 
+    private void ResetSpeed()
+    {
+        m_Speed = m_InitialSpeed;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(k_Bullet) && m_Health > 0)
+        if (m_Health > 0 && (other.CompareTag(k_Bullet) || other.CompareTag(k_Freeze)))
         {
             m_Health--;
             if (m_Health <= 0)
@@ -161,12 +170,18 @@ public class EnemyController : MonoBehaviour
             {
                 m_Animator.SetBool(k_Damaged, true);
             }
+            if (other.CompareTag(k_Freeze))
+            {
+                m_Speed *= 0.5f;
+                m_Speed = Mathf.Clamp(m_Speed, m_InitialSpeed * 0.5f, m_InitialSpeed);
+                Invoke(nameof(ResetSpeed), 2f);
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag(k_Bullet) && m_Health > 0)
+        if (m_Health > 0 && other.CompareTag(k_Bullet))
         {
             m_Health--;
             if (m_Health <= 0)

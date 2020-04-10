@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4934196389706241572}
-  - component: {fileID: 2573514706863841469}
   - component: {fileID: 1673721465404448344}
+  - component: {fileID: 5649452084228629128}
+  - component: {fileID: 2573514706863841469}
   - component: {fileID: 2003933277}
   - component: {fileID: 2003933278}
   - component: {fileID: 80493522837173019}
@@ -35,6 +36,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1673721465404448344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1187884266885560945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e6f448840c201c4e8bb5133cd4f91c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSpeed: 1
+  m_MaxSpeed: 5
+  m_Lifetime: 2
+  m_Rigidbody: {fileID: 2573514706863841469}
+--- !u!114 &5649452084228629128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1187884266885560945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaf79af1f927da542be4d9b9ad0a25c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ExplosionScriptablePool: {fileID: 11400000, guid: bbaad29de0268004cb3081792dc7c96e,
+    type: 2}
+  m_ExplosionRadiusScriptablePool: {fileID: 11400000, guid: bfd3d1b1494eac34f9727d3a4b66c01c,
+    type: 2}
 --- !u!54 &2573514706863841469
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -51,25 +84,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1673721465404448344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1187884266885560945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e6f448840c201c4e8bb5133cd4f91c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minSpeed: 1
-  maxSpeed: 5
-  m_Rigidbody: {fileID: 2573514706863841469}
-  m_ExplosionScriptablePool: {fileID: 11400000, guid: bbaad29de0268004cb3081792dc7c96e,
-    type: 2}
-  m_ExplosionRadiusScriptablePool: {fileID: 11400000, guid: bfd3d1b1494eac34f9727d3a4b66c01c,
-    type: 2}
 --- !u!33 &2003933277
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -8,6 +8,8 @@ namespace Tools
     {
         [SerializeField] private Vector3 m_Origin = Vector3.zero;
         [SerializeField, Range(1, 4), Tooltip("Choose which map to generate")] private uint m_MapNumber = 4;
+        [SerializeField, Range(0.1f, 1f)] private float m_MinSpawnInterval = 1f;
+        [SerializeField, Range(1f, 5f)] private float m_MaxSpawnInterval = 3f;
         [SerializeField, Tooltip("Only works in Play Mode")] private bool m_GenerateMap;
         [SerializeField, Tooltip("Only works in Play Mode")] private bool m_PlayMap;
         [SerializeField, Tooltip("Only works in Play Mode")] private bool m_ClearMap;
@@ -19,10 +21,15 @@ namespace Tools
         [SerializeField] private GameObjectScriptablePool m_EnemyBaseScriptablePool;
         [SerializeField] private GameObjectScriptablePool m_PlayerBaseScriptablePool;
 
+        private bool m_StrongEnemy = false;
+        private int m_NormalEnemies;
+        private int m_StrongEnemies;
+        private int? m_CurrentEnemy = null;
         private float m_SpawnInterval = 1f;
         private float m_TileDisplacement = 2.0f;
         private float m_OriginalTimeScale;
         private string m_MapName;
+        private Player m_Player;
         private Camera m_MainCamera;
         private MoveCamera m_MoveCamera;
         private MapReaderMono m_MapReaderMono;
@@ -72,7 +79,7 @@ namespace Tools
             }
             if (m_PauseGame && Application.isPlaying && m_MapData.MapLayout.Count > 0)
             {
-                Time.timeScale = 0;
+                Time.timeScale = 0f;
             }
             else if(!m_PauseGame && Application.isPlaying && m_MapData.MapLayout.Count > 0)
             {
@@ -91,6 +98,9 @@ namespace Tools
             m_MainCamera = Camera.main;
             m_MoveCamera = m_MainCamera.GetComponent<MoveCamera>();
             GenerateMap();
+            m_NormalEnemies = m_MapData.EnemyWaves.Dequeue();
+            m_StrongEnemies = m_MapData.EnemyWaves.Dequeue();
+            m_Player = FindObjectOfType<Player>();
         }
 
         private void FixedUpdate()
@@ -100,8 +110,77 @@ namespace Tools
                 m_SpawnInterval -= Time.fixedDeltaTime;
                 if (m_SpawnInterval <= 0f)
                 {
-                    PlayMap();
-                    m_SpawnInterval = Random.Range(1f, 3f);
+                    if (m_NormalEnemies > 0 && m_StrongEnemy == false)
+                    {
+                        m_CurrentEnemy = 1;
+                        PlayMap();
+                        m_NormalEnemies--;
+                        if (m_StrongEnemies != 0)
+                        {
+                            m_StrongEnemy = true;
+                        }
+                    }
+                    else if (m_NormalEnemies == 0 && m_StrongEnemy == false)
+                    {
+                        m_StrongEnemy = true;
+                    }
+                    else if (m_StrongEnemies > 0 && m_StrongEnemy)
+                    {
+                        m_CurrentEnemy = 0;
+                        PlayMap();
+                        m_StrongEnemies--;
+                        if (m_NormalEnemies != 0)
+                        {
+                            m_StrongEnemy = false;
+                        }
+                    }
+                    else if (m_StrongEnemies == 0)
+                    {
+                        m_StrongEnemy = false;
+                    }
+                    if(m_NormalEnemies == 0 && m_StrongEnemies == 0 && m_MapData.EnemyWaves.Count > 1)
+                    {
+                        bool nextWave = false;
+                        foreach (EnemyController enemy in EnemyManager.Instance.EnemyControllers)
+                        {
+                            if (enemy.isActiveAndEnabled)
+                            {
+                                nextWave = false;
+                                break;
+                            }
+                            else
+                            {
+                                nextWave = true;
+                            }
+                        }
+                        if (nextWave)
+                        {
+                            m_NormalEnemies = m_MapData.EnemyWaves.Dequeue();
+                            m_StrongEnemies = m_MapData.EnemyWaves.Dequeue();
+                            m_StrongEnemy = false;
+                        }
+                    }
+                    else if (m_MapData.EnemyWaves.Count <= 0)
+                    {
+                        bool winGame = false;
+                        foreach (EnemyController enemy in EnemyManager.Instance.EnemyControllers)
+                        {
+                            if (enemy.isActiveAndEnabled)
+                            {
+                                winGame = false;
+                                break;
+                            }
+                            else
+                            {
+                                winGame = true;
+                            }
+                        }
+                        if (winGame)
+                        {
+                            m_Player.Win();
+                        }   
+                    }
+                    m_SpawnInterval = Random.Range(m_MinSpawnInterval, m_MaxSpawnInterval);
                 }
             }
         }
@@ -185,7 +264,7 @@ namespace Tools
 
         private void PlayMap()
         {
-            EnemyManager.Instance.CreateEnemy(m_MapData.EnemySpawnWorldPosition, m_MapData.Path);
+            EnemyManager.Instance.CreateEnemy(m_MapData.EnemySpawnWorldPosition, m_MapData.Path, m_CurrentEnemy);
         }
 
         private void ClearMap()
@@ -204,6 +283,7 @@ namespace Tools
             }
             m_MapData.ClearLists();
             m_MoveCamera.ResetCameraPosition();
+            EnemyManager.Instance.EnemyControllers.Clear();
         }
     }
 }

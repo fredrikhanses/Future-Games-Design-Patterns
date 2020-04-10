@@ -1,27 +1,28 @@
-﻿using Tools;
-using UnityEngine;
+﻿using UnityEngine;
 
 public interface IBullet
 {
-    void Push();
-    void Reset();
-    void Sleep();
-    void OnDisable();
     void OnTriggerEnter(Collider other);
 }
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private float minSpeed;
-    [SerializeField] private float maxSpeed;
+    [SerializeField] private float m_MinSpeed;
+    [SerializeField] private float m_MaxSpeed;
+    [SerializeField] private float m_Lifetime = 2f;
     [SerializeField] private Rigidbody m_Rigidbody;
-    [SerializeField] private GameObjectScriptablePool m_ExplosionScriptablePool;
-    [SerializeField] private GameObjectScriptablePool m_ExplosionRadiusScriptablePool;
+
+    private IBullet m_Bullet;
+
+    private void Start()
+    {
+        m_Bullet = GetComponent<IBullet>();
+    }
 
     public void Push(Vector3 direction)
     {
-        m_Rigidbody.velocity = direction * Random.Range(minSpeed, maxSpeed);
-        Invoke(nameof(Sleep), 2f);
+        m_Rigidbody.velocity = direction * Random.Range(m_MinSpeed, m_MaxSpeed);
+        Invoke(nameof(Sleep), m_Lifetime);
     }
     
     public void Reset()
@@ -41,11 +42,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (m_ExplosionScriptablePool != null && m_ExplosionRadiusScriptablePool != null)
-        {
-            m_ExplosionScriptablePool.Rent(true).transform.position = transform.position;
-            m_ExplosionRadiusScriptablePool.Rent(true).transform.position = transform.position;
-        }
+        m_Bullet.OnTriggerEnter(other);
         Invoke(nameof(Sleep), 0.0f);
     }
 }

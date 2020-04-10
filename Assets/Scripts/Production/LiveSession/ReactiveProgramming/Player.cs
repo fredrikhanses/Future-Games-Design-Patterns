@@ -57,11 +57,17 @@ public class Player : MonoBehaviour
         } 
     }
 
-    public void Damage(int damage)
+    public void DoDamage(int damage)
     {
         if (Health > 0)
         {
             Health -= damage;
         }
+    }
+
+    public void Win()
+    {
+        Health += 100;
+        Health -= 100;
     }
 }
