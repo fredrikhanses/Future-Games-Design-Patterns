@@ -21,7 +21,7 @@ public class Bullet : MonoBehaviour
 
     public void Push(Vector3 direction)
     {
-        m_Rigidbody.velocity = direction * Random.Range(m_MinSpeed, m_MaxSpeed);
+        m_Rigidbody.velocity = direction * 2.5f;//Random.Range(m_MinSpeed, m_MaxSpeed);
         Invoke(nameof(Sleep), m_Lifetime);
     }
     
@@ -43,6 +43,6 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         m_Bullet.OnTriggerEnter(other);
-        Invoke(nameof(Sleep), 0.0f);
+        gameObject.SetActive(false);
     }
 }

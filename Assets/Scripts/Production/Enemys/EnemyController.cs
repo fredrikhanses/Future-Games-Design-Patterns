@@ -22,6 +22,8 @@ public class EnemyController : MonoBehaviour
     private const float k_MinDistanceToGoal = 0.01f;
     private const float k_GroundHeight = 0.8f;
     private const float k_KillDelay = 0.5f;
+    private const float k_SlowPercent = 0.5f;
+    private const float k_SpeedResetDelay = 2f;
     private const string k_Killed = "Killed";
     private const string k_IsWalking = "isWalking";
     private const string k_Damaged = "Damaged";
@@ -30,11 +32,17 @@ public class EnemyController : MonoBehaviour
 
     private void Awake()
     {
+        m_InitialHealth = m_Health;
+        m_InitialSpeed = m_Speed;
+    }
+
+    private void Start()
+    {
         if (m_Rigidbody == null)
         {
             m_Rigidbody = GetComponent<Rigidbody>();
         }
-        if(m_Animator == null)
+        if (m_Animator == null)
         {
             m_Animator = GetComponent<Animator>();
         }
@@ -42,8 +50,6 @@ public class EnemyController : MonoBehaviour
         {
             m_Player = FindObjectOfType<Player>();
         }
-        m_InitialHealth = m_Health;
-        m_InitialSpeed = m_Speed;
     }
 
     private void FixedUpdate()
@@ -172,9 +178,9 @@ public class EnemyController : MonoBehaviour
             }
             if (other.CompareTag(k_Freeze))
             {
-                m_Speed *= 0.5f;
-                m_Speed = Mathf.Clamp(m_Speed, m_InitialSpeed * 0.5f, m_InitialSpeed);
-                Invoke(nameof(ResetSpeed), 2f);
+                m_Speed *= k_SlowPercent;
+                m_Speed = Mathf.Clamp(m_Speed, m_InitialSpeed * k_SlowPercent, m_InitialSpeed);
+                Invoke(nameof(ResetSpeed), k_SpeedResetDelay);
             }
         }
     }

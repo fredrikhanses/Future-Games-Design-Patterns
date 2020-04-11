@@ -110,6 +110,8 @@ public class MapReader
     private string GetMap(string mapName)
     {
         string mapContent = m_TextHandler.ReadText(mapName);
+        // Copy map
+        // m_TextHandler.WriteText("map_5", mapContent);
         string[] mapHolder = mapContent.Split(m_MapSeparatorChar, StringSplitOptions.RemoveEmptyEntries);
         CalculateWaveData(mapHolder[1]);
         return mapHolder[0];
@@ -127,6 +129,7 @@ public class MapReader
                 m_MapData.EnemyWaves.Enqueue(result);
             }
         }
+        // Remove first empty wave
         m_MapData.EnemyWaves.Dequeue();
     }
 }

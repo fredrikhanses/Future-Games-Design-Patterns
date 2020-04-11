@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class PlayerHealthListener : MonoBehaviour
 {
     [SerializeField] private Text m_TextField;
-    [SerializeField] private float m_GameOverDelay = 2.0f;
+    [SerializeField] private GameStateListener m_GameStateListener;
     private Player m_Player;
     private string m_PlayerDied = "Player Died";
 
@@ -23,6 +23,10 @@ public class PlayerHealthListener : MonoBehaviour
         {
             m_TextField = GetComponent<Text>();
         }
+        if (m_GameStateListener == null)
+        {
+            m_GameStateListener = GetComponent<GameStateListener>();
+        }
         m_Player = FindObjectOfType<Player>();
         m_Player.OnPlayerHealthChanged += UpdateTextField;
         m_Player.ResetHealth();
@@ -38,27 +42,11 @@ public class PlayerHealthListener : MonoBehaviour
         if (playerHealth <= 0)
         {
             m_TextField.text = m_PlayerDied;
-            Invoke(nameof(GameOverScreen), m_GameOverDelay);
+            m_GameStateListener.LoseGame();
         }
         else
         {
             m_TextField.text = playerHealth.ToString();
         }
-        if (playerHealth >= 100)
-        {
-            Invoke(nameof(WinScreen), m_GameOverDelay);
-        }
-    }
-     
-    private void WinScreen()
-    {
-        m_TextField.text = "PLAYER WINS";
-        Time.timeScale = 0f;
-    }
-
-    private void GameOverScreen()
-    {
-        m_TextField.text = "GAME OVER";
-        Time.timeScale = 0f;
     }
 }

@@ -5,7 +5,6 @@ namespace Tools
 {
     public class TextHandler
     {
-        private string m_Path;
         private StringBuilder m_StringBuilder = new StringBuilder(); 
         private const string k_MapPath = "Assets/Resources/MapSettings/";
         private const string k_TextEnding = ".txt";
@@ -15,9 +14,9 @@ namespace Tools
             m_StringBuilder.Append(k_MapPath);
             m_StringBuilder.Append(name);
             m_StringBuilder.Append(k_TextEnding);
-            m_Path = m_StringBuilder.ToString();
+            string path = m_StringBuilder.ToString();
             m_StringBuilder.Clear();
-            StreamReader reader = new StreamReader(m_Path);
+            StreamReader reader = new StreamReader(path);
             string textContent = (reader.ReadToEnd());
             reader.Close();
             return textContent;
@@ -28,9 +27,9 @@ namespace Tools
             m_StringBuilder.Append(k_MapPath);
             m_StringBuilder.Append(name);
             m_StringBuilder.Append(k_TextEnding);
-            m_Path = m_StringBuilder.ToString();
+            string path = m_StringBuilder.ToString();
             m_StringBuilder.Clear();
-            StreamWriter writer = new StreamWriter(m_Path, true);
+            StreamWriter writer = new StreamWriter(path, false);
             writer.Write(textContent);
             writer.Close();
         }

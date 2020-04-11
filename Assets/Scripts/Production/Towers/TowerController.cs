@@ -4,7 +4,7 @@ public class TowerController : MonoBehaviour
 {
     [SerializeField] private Weapon m_Weapon;
     [SerializeField] private GameObject m_TowerTop;
-    [SerializeField] private float m_MaxRange = 10f;
+    [SerializeField] private float m_MaxRange = 20f;
     
     private EnemyController m_CurrentEnemy;
     private float m_ShootTimer = 0f;
