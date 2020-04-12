@@ -43,7 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9450c3d97e73c4ba8ec38bf1a00912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_StrongEnemyScriptablePool: {fileID: 11400000, guid: 2f89bd36a2465cf47a0b30a019da2f44,
+  m_StandardEnemyScriptablePool: {fileID: 11400000, guid: f2930b5bc6bc6f942b2a259af36ef864,
     type: 2}
-  m_EnemyScriptablePool: {fileID: 11400000, guid: f2930b5bc6bc6f942b2a259af36ef864,
+  m_BigEnemyScriptablePool: {fileID: 11400000, guid: 2f89bd36a2465cf47a0b30a019da2f44,
     type: 2}
+  k_BigEnemyChance: 3

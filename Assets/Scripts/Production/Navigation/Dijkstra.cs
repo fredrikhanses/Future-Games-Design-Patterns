@@ -19,7 +19,11 @@ namespace AI
 			m_Accessibles = new HashSet<Vector2Int>(accessibles);
 		}
 
-		public IEnumerable<Vector2Int> FindPath(Vector2Int start, Vector2Int goal)
+        /// <summary> Finds a path between two positions.</summary>
+        /// <param name="start"> Position to start from.</param>
+        /// <param name="goal"> Position to find path to.</param>
+        /// <returns> Path containing positions necessary to visit.</returns>
+        public IEnumerable<Vector2Int> FindPath(Vector2Int start, Vector2Int goal)
 		{
 			Clear();
 			if (start.Equals(goal))

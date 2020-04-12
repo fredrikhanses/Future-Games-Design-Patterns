@@ -27,9 +27,9 @@ public class EnemyCounterListener : MonoBehaviour, ILoseGame
     {
         if (m_EnemyCounter != null)
         {
-            m_EnemyCounter.OnWaveNumberChanged += UpdateEnemyWaveTextField;
+            m_EnemyCounter.OnEnemyWavesChanged += UpdateEnemyWaveTextField;
             m_EnemyCounter.OnActiveEnemiesChanged += UpdateActiveEnemiesTextField;
-            m_EnemyCounter.OnEnemyReinforcementChanged += UpdateEnemyReinforcementTextField;
+            m_EnemyCounter.OnEnemyReinforcementsChanged += UpdateEnemyReinforcementTextField;
         }
     }
 
@@ -44,16 +44,16 @@ public class EnemyCounterListener : MonoBehaviour, ILoseGame
         {
             m_EnemyCounter = FindObjectOfType<EnemyCounter>();
         }
-        m_EnemyCounter.OnWaveNumberChanged += UpdateEnemyWaveTextField;
+        m_EnemyCounter.OnEnemyWavesChanged += UpdateEnemyWaveTextField;
         m_EnemyCounter.OnActiveEnemiesChanged += UpdateActiveEnemiesTextField;
-        m_EnemyCounter.OnEnemyReinforcementChanged += UpdateEnemyReinforcementTextField;
+        m_EnemyCounter.OnEnemyReinforcementsChanged += UpdateEnemyReinforcementTextField;
     }
 
     private void OnDisable()
     {
-        m_EnemyCounter.OnWaveNumberChanged -= UpdateEnemyWaveTextField;
+        m_EnemyCounter.OnEnemyWavesChanged -= UpdateEnemyWaveTextField;
         m_EnemyCounter.OnActiveEnemiesChanged -= UpdateActiveEnemiesTextField;
-        m_EnemyCounter.OnEnemyReinforcementChanged -= UpdateEnemyReinforcementTextField;
+        m_EnemyCounter.OnEnemyReinforcementsChanged -= UpdateEnemyReinforcementTextField;
     }
 
     private void UpdateEnemyReinforcementTextField(int enemyReinforcement)
@@ -95,7 +95,7 @@ public class EnemyCounterListener : MonoBehaviour, ILoseGame
 
     private void WinGame()
     {
-        if (m_EnemyCounter.NormalEnemies <= 0 && m_EnemyCounter.StrongEnemies <= 0 && m_EnemyCounter.WaveNumber <= 0)
+        if (m_EnemyCounter.StandardEnemies <= 0 && m_EnemyCounter.BigEnemies <= 0 && m_EnemyCounter.EnemyWaves <= 0)
         {
             bool winGame = false;
             if (EnemyManager.Instance.ActiveEnemyControllers.Count <= 0)
@@ -109,6 +109,9 @@ public class EnemyCounterListener : MonoBehaviour, ILoseGame
         }
     }
 
+    /// <summary> 
+    ///     Lose game if player health is zero or below.
+    /// </summary>
     public void LoseGame()
     {
         if (m_Player.Health <= 0)

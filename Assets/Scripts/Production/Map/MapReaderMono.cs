@@ -34,6 +34,9 @@ public class MapReaderMono : MonoBehaviour, IMapReader
         }
     }
 
+    /// <summary> Reads and interprets a map.</summary>
+    /// <param name="mapName"> Name of the map to read.</param>
+    /// <returns> MapData containing all necessary data for building a map.</returns>
     public MapData ReadMap(string mapName)
     {
         m_MapReader = new MapReader(Origin, Displacement, m_MapKeyData);

@@ -28,6 +28,9 @@ public class MapData : IMapData
     private List<KeyValuePair<Vector3, GameObject>> m_MapLayout = new List<KeyValuePair<Vector3, GameObject>>();
     private Queue<int> m_EnemyWaves = new Queue<int>();
 
+    /// <summary> 
+    ///     Clear lists.
+    /// </summary>
     public void ClearLists()
     {
         m_WalkableTiles.Clear();

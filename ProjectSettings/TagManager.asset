@@ -12,6 +12,7 @@ TagManager:
   - EnemyBase
   - PlayerBase
   - Freeze
+  - Explosion
   layers:
   - Default
   - TransparentFX

@@ -4,8 +4,10 @@ public class TowerController : MonoBehaviour
 {
     [SerializeField] private Weapon m_Weapon;
     [SerializeField] private GameObject m_TowerTop;
-    [SerializeField] private float m_MaxRange = 20f;
-    
+    [SerializeField] private float m_MaxRange = 12f;
+    [SerializeField] private float m_MinShootInterval = 1f;
+    [SerializeField] private float m_MaxShootInterval = 3f;
+
     private EnemyController m_CurrentEnemy;
     private float m_ShootTimer = 0f;
 
@@ -52,7 +54,7 @@ public class TowerController : MonoBehaviour
                 if (m_ShootTimer <= 0f)
                 {
                     m_Weapon.Shoot(m_LookDirection);
-                    m_ShootTimer = Random.Range(1f, 3f);
+                    m_ShootTimer = Random.Range(m_MinShootInterval, m_MaxShootInterval);
                 }
             }
         }

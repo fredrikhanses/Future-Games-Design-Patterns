@@ -47,6 +47,7 @@ public class EnemyController : MonoBehaviour, IEnemy
     private const string k_Damaged = "Damaged";
     private const string k_Bullet = "Bullet";
     private const string k_Freeze = "Freeze";
+    private const string k_Explosion = "Explosion";
 
     private void Awake()
     {
@@ -95,7 +96,7 @@ public class EnemyController : MonoBehaviour, IEnemy
     }
 
     /// <summary> Start enemy movement along path.</summary>
-    /// <param name="path">Path to walk along.</param>
+    /// <param name="path"> Path to walk along.</param>
     public void StartMoving(IEnumerable<Vector3> path)
     {
         m_Path = new LinkedList<Vector3>(path);
@@ -178,6 +179,9 @@ public class EnemyController : MonoBehaviour, IEnemy
         m_Health = m_InitialHealth;
     }
 
+    /// <summary> 
+    ///     Reset enemy position to spawn position.
+    /// </summary>
     public void ResetPosition(Vector3 spawnPosition)
     {
         transform.position = spawnPosition;
@@ -207,7 +211,7 @@ public class EnemyController : MonoBehaviour, IEnemy
 
     private void OnTriggerEnter(Collider other)
     {
-        if (m_Health > 0 && (other.CompareTag(k_Bullet) || other.CompareTag(k_Freeze)))
+        if (m_Health > 0 && (other.CompareTag(k_Bullet) || other.CompareTag(k_Freeze) || other.CompareTag(k_Explosion)))
         {
             m_Health--;
             if (m_Health <= 0)
@@ -231,7 +235,7 @@ public class EnemyController : MonoBehaviour, IEnemy
 
     private void OnTriggerExit(Collider other)
     {
-        if (m_Health > 0 && other.CompareTag(k_Bullet))
+        if (m_Health > 0 && other.CompareTag(k_Explosion))
         {
             m_Health--;
             if (m_Health <= 0)

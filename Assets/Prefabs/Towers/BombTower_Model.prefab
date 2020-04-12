@@ -299,7 +299,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Weapon: {fileID: 4721811735135044290}
   m_TowerTop: {fileID: 7391422965515881056}
-  m_MaxRange: 10
+  m_MaxRange: 12
+  m_MinShootInterval: 1
+  m_MaxShootInterval: 3
 --- !u!1 &7391422965515881056
 GameObject:
   m_ObjectHideFlags: 0

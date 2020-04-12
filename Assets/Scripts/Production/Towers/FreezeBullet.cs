@@ -2,8 +2,8 @@
 
 class FreezeBullet : MonoBehaviour, ITriggerable
 {
-    public void OnTriggerEnter(Collider other)
-    {
-        
-    }
+    /// <summary>
+    ///     No function implemented yet.
+    /// </summary>
+    public void OnTriggerEnter() { }
 }

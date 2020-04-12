@@ -16,7 +16,7 @@ public class MapBuilderMono : MonoBehaviour
     [SerializeField] private GameObjectScriptablePool m_EnemyBaseScriptablePool;
     [SerializeField] private GameObjectScriptablePool m_PlayerBaseScriptablePool;
 
-    private bool m_UseStrongEnemy = false;
+    private bool m_UseBigEnemy = false;
     private int? m_CurrentEnemy = null;
     private float m_SpawnInterval = 1f;
     private readonly float m_TileDisplacement = 2.0f;
@@ -45,10 +45,10 @@ public class MapBuilderMono : MonoBehaviour
         m_MainCamera = Camera.main;
         m_CameraMove = m_MainCamera.GetComponent<CameraMove>();
         GenerateMap();
-        m_EnemyCounter.WaveNumber = Mathf.RoundToInt(m_MapData.EnemyWaves.Count * 0.5f);
-        m_EnemyCounter.NormalEnemies = m_MapData.EnemyWaves.Dequeue();
-        m_EnemyCounter.StrongEnemies = m_MapData.EnemyWaves.Dequeue();
-        m_EnemyCounter.EnemyReinforcement = m_EnemyCounter.NormalEnemies + m_EnemyCounter.StrongEnemies;
+        m_EnemyCounter.EnemyWaves = Mathf.RoundToInt(m_MapData.EnemyWaves.Count * 0.5f);
+        m_EnemyCounter.StandardEnemies = m_MapData.EnemyWaves.Dequeue();
+        m_EnemyCounter.BigEnemies = m_MapData.EnemyWaves.Dequeue();
+        m_EnemyCounter.EnemyReinforcements = m_EnemyCounter.StandardEnemies + m_EnemyCounter.BigEnemies;
     }
 
     private void FixedUpdate()
@@ -58,35 +58,35 @@ public class MapBuilderMono : MonoBehaviour
             m_SpawnInterval -= Time.fixedDeltaTime;
             if (m_SpawnInterval <= 0f)
             {
-                if (m_EnemyCounter.NormalEnemies > 0 && m_UseStrongEnemy == false)
+                if (m_EnemyCounter.StandardEnemies > 0 && m_UseBigEnemy == false)
                 {
-                    m_CurrentEnemy = 1;
-                    PlayMap();
-                    m_EnemyCounter.DecreaseNormalEnemies();
-                    if (m_EnemyCounter.StrongEnemies != 0)
+                    m_CurrentEnemy = (int?)UnitType.Standard;
+                    SpawnEnemy();
+                    m_EnemyCounter.DecreaseStandardEnemies();
+                    if (m_EnemyCounter.BigEnemies != 0)
                     {
-                        m_UseStrongEnemy = true;
+                        m_UseBigEnemy = true;
                     }
                 }
-                else if (m_EnemyCounter.NormalEnemies == 0 && m_UseStrongEnemy == false)
+                else if (m_EnemyCounter.StandardEnemies == 0 && m_UseBigEnemy == false)
                 {
-                    m_UseStrongEnemy = true;
+                    m_UseBigEnemy = true;
                 }
-                else if (m_EnemyCounter.StrongEnemies > 0 && m_UseStrongEnemy)
+                else if (m_EnemyCounter.BigEnemies > 0 && m_UseBigEnemy)
                 {
-                    m_CurrentEnemy = 0;
-                    PlayMap();
-                    m_EnemyCounter.DecreaseStrongEnemies(); ;
-                    if (m_EnemyCounter.NormalEnemies != 0)
+                    m_CurrentEnemy = (int?)UnitType.Big;
+                    SpawnEnemy();
+                    m_EnemyCounter.DecreaseBigEnemies(); ;
+                    if (m_EnemyCounter.StandardEnemies != 0)
                     {
-                        m_UseStrongEnemy = false;
+                        m_UseBigEnemy = false;
                     }
                 }
-                else if (m_EnemyCounter.StrongEnemies == 0)
+                else if (m_EnemyCounter.BigEnemies == 0)
                 {
-                    m_UseStrongEnemy = false;
+                    m_UseBigEnemy = false;
                 }
-                if(m_EnemyCounter.NormalEnemies == 0 && m_EnemyCounter.StrongEnemies == 0 && m_EnemyCounter.WaveNumber >= 0)
+                if(m_EnemyCounter.StandardEnemies == 0 && m_EnemyCounter.BigEnemies == 0 && m_EnemyCounter.EnemyWaves >= 0)
                 {
                     bool nextWave = false;
                     if (EnemyManager.Instance.ActiveEnemyControllers.Count <= 0)
@@ -98,13 +98,13 @@ public class MapBuilderMono : MonoBehaviour
                         m_EnemyCounter.DecreaseWaves();
                         if (m_MapData.EnemyWaves.Count > 1)
                         {
-                            m_EnemyCounter.NormalEnemies = m_MapData.EnemyWaves.Dequeue();
-                            m_EnemyCounter.StrongEnemies = m_MapData.EnemyWaves.Dequeue();
+                            m_EnemyCounter.StandardEnemies = m_MapData.EnemyWaves.Dequeue();
+                            m_EnemyCounter.BigEnemies = m_MapData.EnemyWaves.Dequeue();
                         }
-                        m_UseStrongEnemy = false;
+                        m_UseBigEnemy = false;
                     }
                 }
-                else if (m_EnemyCounter.NormalEnemies == 0 && m_EnemyCounter.StrongEnemies == 0 && m_EnemyCounter.WaveNumber < 0)
+                else if (m_EnemyCounter.StandardEnemies == 0 && m_EnemyCounter.BigEnemies == 0 && m_EnemyCounter.EnemyWaves < 0)
                 {
                     m_EnemyCounter.WinGame();
                 }
@@ -133,7 +133,7 @@ public class MapBuilderMono : MonoBehaviour
     {
         m_MapReaderMono.Displacement = m_TileDisplacement;
         m_MapReaderMono.Origin = m_Origin;
-        m_CameraMove.MoveCameraToOrigin(m_Origin);
+        m_CameraMove.MoveCamera(m_Origin);
     }
 
     private void ReadMap()
@@ -190,7 +190,7 @@ public class MapBuilderMono : MonoBehaviour
         }
     }
 
-    private void PlayMap()
+    private void SpawnEnemy()
     {
         EnemyManager.Instance.CreateEnemy(m_MapData.EnemySpawnWorldPosition, m_CurrentEnemy);
         EnemyManager.Instance.StartMoving(m_MapData.Path);

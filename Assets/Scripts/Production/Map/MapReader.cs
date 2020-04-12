@@ -115,8 +115,6 @@ public class MapReader : IMapReader
     private string GetMap(string mapName)
     {
         string mapContent = m_TextHandler.ReadText(mapName);
-        // Copy map
-        // m_TextHandler.WriteText("map_5", mapContent);
         string[] mapHolder = mapContent.Split(m_MapSeparatorChar, StringSplitOptions.RemoveEmptyEntries);
         CalculateWaveData(mapHolder[1]);
         return mapHolder[0];

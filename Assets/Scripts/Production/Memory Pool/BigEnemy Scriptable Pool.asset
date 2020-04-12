@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf02840ded6e02c4aa1a59218c3a90fa, type: 3}
-  m_Name: StrongEnemy Scriptable Pool
+  m_Name: BigEnemy Scriptable Pool
   m_EditorClassIdentifier: 
   m_Prefab: {fileID: 3358623668188840345, guid: b89a11b0af79f224d8e0af1ee145eb54,
     type: 3}
   m_InitSize: 10
   m_ExpandBy: 5
   m_HasParent: 1
-  m_ParentName: StrongEnemyScriptablePool
+  m_ParentName: BigEnemyScriptablePool

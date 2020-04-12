@@ -4,7 +4,7 @@ public class ExplosionRadius : MonoBehaviour
 {
     [SerializeField] private float m_Lifetime = 0.1f;
 
-     private void Sleep()
+    private void Sleep()
     {
         gameObject.SetActive(false);
     }

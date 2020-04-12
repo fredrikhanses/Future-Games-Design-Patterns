@@ -6,7 +6,10 @@ class BombBullet : MonoBehaviour, ITriggerable
     [SerializeField] private GameObjectScriptablePool m_ExplosionScriptablePool;
     [SerializeField] private GameObjectScriptablePool m_ExplosionRadiusScriptablePool;
 
-    public void OnTriggerEnter(Collider other)
+    /// <summary>
+    ///     Spawn explosion particles and explosion radius at impact position.
+    /// </summary>
+    public void OnTriggerEnter()
     {
         if (m_ExplosionScriptablePool != null && m_ExplosionRadiusScriptablePool != null)
         {

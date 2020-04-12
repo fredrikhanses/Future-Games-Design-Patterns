@@ -6,14 +6,14 @@ public interface IDecreaseEnemyWaves
     void DecreaseWaves();
 }
 
-public interface IDecreaseNormalEnemies
+public interface IDecreaseStandardEnemies
 {
-    void DecreaseNormalEnemies();
+    void DecreaseStandardEnemies();
 }
 
-public interface IDecreaseStrongEnemies
+public interface IDecreaseBigEnemies
 {
-    void DecreaseStrongEnemies();
+    void DecreaseBigEnemies();
 }
 
 public interface IDecreaseActiveEnemies
@@ -31,30 +31,31 @@ public interface IWinGame
     void WinGame();
 }
 
-public interface IEnemyCounter : IDecreaseEnemyWaves, IDecreaseNormalEnemies, IDecreaseStrongEnemies, IIncreaseActiveEnemies, IDecreaseActiveEnemies, IWinGame { }
+public interface IEnemyCounter : IDecreaseEnemyWaves, IDecreaseStandardEnemies, 
+    IDecreaseBigEnemies, IIncreaseActiveEnemies, IDecreaseActiveEnemies, IWinGame { }
 
 class EnemyCounter : MonoBehaviour, IEnemyCounter
 {
-    private int m_WaveNumber;
+    private int m_EnemyWaves;
     private int m_ActiveEnemies;
-    private int m_EnemyReinforcement;
+    private int m_EnemyReinforcements;
 
-    public int NormalEnemies { get; set; }
-    public int StrongEnemies { get; set; }
+    public int StandardEnemies { get; set; }
+    public int BigEnemies { get; set; }
 
-    public event Action<int> OnWaveNumberChanged;
+    public event Action<int> OnEnemyWavesChanged;
     public event Action<int> OnActiveEnemiesChanged;
-    public event Action<int> OnEnemyReinforcementChanged;
+    public event Action<int> OnEnemyReinforcementsChanged;
 
-    public int EnemyReinforcement
+    public int EnemyReinforcements
     {
-        get => m_EnemyReinforcement;
+        get => m_EnemyReinforcements;
         set
         {
-            if (m_EnemyReinforcement != value)
+            if (m_EnemyReinforcements != value)
             {
-                m_EnemyReinforcement = value;
-                OnEnemyReinforcementChanged?.Invoke(m_EnemyReinforcement);
+                m_EnemyReinforcements = value;
+                OnEnemyReinforcementsChanged?.Invoke(m_EnemyReinforcements);
             }
         }
     }
@@ -72,48 +73,66 @@ class EnemyCounter : MonoBehaviour, IEnemyCounter
         }
     }
 
-    public int WaveNumber
+    public int EnemyWaves
     {
-        get => m_WaveNumber;
+        get => m_EnemyWaves;
         set
         {
-            if (m_WaveNumber != value)
+            if (m_EnemyWaves != value)
             {
-                m_WaveNumber = value;
-                OnWaveNumberChanged?.Invoke(m_WaveNumber);
+                m_EnemyWaves = value;
+                OnEnemyWavesChanged?.Invoke(m_EnemyWaves);
             }
         }
     }
 
+    /// <summary> 
+    ///     Decrease active enemy amount by one.
+    /// </summary>
     public void DecreaseActiveEnemies()
     {
         ActiveEnemies--;
     }
 
+    /// <summary> 
+    ///     Increase active enemy amount by one.
+    /// </summary>
     public void IncreaseActiveEnemies()
     {
         ActiveEnemies++;
     }
 
+    /// <summary> 
+    ///     Decrease enemy wave amount by one.
+    /// </summary>
     public void DecreaseWaves()
     {
-        WaveNumber--;
+        EnemyWaves--;
     }
 
-    public void DecreaseNormalEnemies()
+    /// <summary> 
+    ///     Decrease standard enemy amount by one.
+    /// </summary>
+    public void DecreaseStandardEnemies()
     {
-        NormalEnemies--;
-        EnemyReinforcement = NormalEnemies + StrongEnemies;
+        StandardEnemies--;
+        EnemyReinforcements = StandardEnemies + BigEnemies;
     }
 
-    public void DecreaseStrongEnemies()
+    /// <summary> 
+    ///     Decrease big enemy amount by one.
+    /// </summary>
+    public void DecreaseBigEnemies()
     {
-        StrongEnemies--;
-        EnemyReinforcement = NormalEnemies + StrongEnemies;
+        BigEnemies--;
+        EnemyReinforcements = StandardEnemies + BigEnemies;
     }
 
+    /// <summary> 
+    ///     Decrease enemy waves and if negative win game.
+    /// </summary>
     public void WinGame()
     {
-        WaveNumber--;
+        EnemyWaves--;
     }
 }

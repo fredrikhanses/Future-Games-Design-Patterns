@@ -21,6 +21,9 @@ namespace Tools
         private const string k_MapPath = "Assets/Resources/MapSettings/";
         private const string k_TextEnding = ".txt";
 
+        /// <summary> Reads and fetches data from a text file.</summary>
+        /// <param name="name"> Name of the text file to read.</param>
+        /// <returns> Map content as a string.</returns>
         public string ReadText(string name)
         {
             m_StringBuilder.Append(k_MapPath);
@@ -33,7 +36,10 @@ namespace Tools
             reader.Close();
             return textContent;
         }
-        
+
+        /// <summary> Writes a string to a text file.</summary>
+        /// <param name="name"> Name of the text file to write to.</param>
+        /// <param name="textContent"> Content to write as a string.</param>
         public void WriteText(string name, string textContent)
         {
             m_StringBuilder.Append(k_MapPath);
