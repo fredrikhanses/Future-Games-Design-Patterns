@@ -1,7 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class MapData
+public interface IMapData
+{
+    void ClearLists();
+}
+
+public class MapData : IMapData
 {
     public Vector2Int EnemySpawnTilePosition { get => m_EnemySpawnTilePosition; set => m_EnemySpawnTilePosition = value; }
     public Vector2Int PlayerBaseTilePosition { get => m_PlayerBaseTilePosition; set => m_PlayerBaseTilePosition = value; }

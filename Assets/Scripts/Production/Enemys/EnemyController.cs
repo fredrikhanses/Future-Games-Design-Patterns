@@ -1,15 +1,33 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+public interface IStartMoving
+{
+    void StartMoving(IEnumerable<Vector3> path);
+}
+
+public interface IReset
+{
+    void Reset();
+}
+
+public interface IResetPosition
+{
+    void ResetPosition(Vector3 position);
+}
+
+public interface IEnemy : IStartMoving, IReset, IResetPosition { }
+
 [RequireComponent(typeof(Rigidbody), typeof(Animator))]
 [SelectionBase]
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour, IEnemy
 {
     [SerializeField] private int m_Health;
     [SerializeField] private int m_Damage;
     [SerializeField] private float m_Speed;
     [SerializeField] private Rigidbody m_Rigidbody;
     [SerializeField] private Player m_Player;
+    [SerializeField] private GameState m_GameState;
     [SerializeField] private Animator m_Animator;
 
     private bool m_Move;
@@ -50,6 +68,10 @@ public class EnemyController : MonoBehaviour
         {
             m_Player = FindObjectOfType<Player>();
         }
+        if (m_GameState == null)
+        {
+            m_GameState = FindObjectOfType<GameState>();
+        }
     }
 
     private void FixedUpdate()
@@ -74,7 +96,7 @@ public class EnemyController : MonoBehaviour
 
     /// <summary> Start enemy movement along path.</summary>
     /// <param name="path">Path to walk along.</param>
-    public void MoveStart(IEnumerable<Vector3> path)
+    public void StartMoving(IEnumerable<Vector3> path)
     {
         m_Path = new LinkedList<Vector3>(path);
         if(m_Path.Count > 0)
@@ -133,33 +155,54 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    /// <summary> Reset enemy to initial state.</summary>
-    /// <param name="spawnPosition">Position to spawn at.</param>
-    public void Reset(Vector3 spawnPosition)
+    /// <summary> 
+    ///     Reset enemy to initial state.
+    /// </summary>
+    public void Reset()
     {
-        m_Rigidbody.velocity = Vector3.zero;
-        m_Health = m_InitialHealth;
-        m_Speed = m_InitialSpeed;
+        ResetAnimations();
+        ResetHealth();
+        ResetSpeed();
+        ResetVelocity();
+    }
+
+    private void ResetAnimations()
+    {
         m_Animator.SetBool(k_Killed, false);
         m_Animator.SetBool(k_IsWalking, true);
         m_Animator.SetBool(k_Damaged, false);
+    }
+
+    private void ResetHealth()
+    {
+        m_Health = m_InitialHealth;
+    }
+
+    public void ResetPosition(Vector3 spawnPosition)
+    {
         transform.position = spawnPosition;
         transform.rotation = Quaternion.identity;
     }
 
+    private void ResetSpeed()
+    {
+        m_Speed = m_InitialSpeed;
+    }
+
+    private void ResetVelocity()
+    {
+        m_Rigidbody.velocity = Vector3.zero;
+    }
+
     private void Sleep()
     {
+        m_GameState.DecreaseActiveEnemies();
         gameObject.SetActive(false);
     }
 
     private void OnDisable()
     {
         CancelInvoke(nameof(Sleep));
-    }
-
-    private void ResetSpeed()
-    {
-        m_Speed = m_InitialSpeed;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -169,6 +212,7 @@ public class EnemyController : MonoBehaviour
             m_Health--;
             if (m_Health <= 0)
             {
+                EnemyManager.Instance.ActiveEnemyControllers.Remove(this);
                 m_Animator.SetBool(k_Killed, true);
                 Invoke(nameof(Sleep), k_KillDelay);
             }
@@ -192,6 +236,7 @@ public class EnemyController : MonoBehaviour
             m_Health--;
             if (m_Health <= 0)
             {
+                EnemyManager.Instance.ActiveEnemyControllers.Remove(this);
                 m_Animator.SetBool(k_Killed, true);
                 Invoke(nameof(Sleep), k_KillDelay);
             }

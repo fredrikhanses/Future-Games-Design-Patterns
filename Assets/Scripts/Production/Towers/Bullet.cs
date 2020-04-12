@@ -1,31 +1,38 @@
 ﻿using UnityEngine;
 
-public interface IBullet
+public interface ITriggerable
 {
     void OnTriggerEnter(Collider other);
 }
 
-public class Bullet : MonoBehaviour
+public interface IResetVelocity
+{
+    void ResetVelocity();
+}
+
+public interface IBullet : IShoot, IResetVelocity { }
+
+public class Bullet : MonoBehaviour, IBullet
 {
     [SerializeField] private float m_MinSpeed;
     [SerializeField] private float m_MaxSpeed;
     [SerializeField] private float m_Lifetime = 2f;
     [SerializeField] private Rigidbody m_Rigidbody;
 
-    private IBullet m_Bullet;
+    private ITriggerable m_Bullet;
 
     private void Start()
     {
-        m_Bullet = GetComponent<IBullet>();
+        m_Bullet = GetComponent<ITriggerable>();
     }
 
-    public void Push(Vector3 direction)
+    public void Shoot(Vector3 direction)
     {
         m_Rigidbody.velocity = direction * 2.5f;//Random.Range(m_MinSpeed, m_MaxSpeed);
         Invoke(nameof(Sleep), m_Lifetime);
     }
     
-    public void Reset()
+    public void ResetVelocity()
     {
         m_Rigidbody.velocity = Vector3.zero;    
     }

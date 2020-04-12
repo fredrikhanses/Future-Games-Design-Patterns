@@ -21,17 +21,14 @@ public class MapBuilderMono : MonoBehaviour
     [SerializeField] private GameObjectScriptablePool m_PlayerBaseScriptablePool;
 
     private bool m_UseStrongEnemy = false;
-    //private int m_NormalEnemies;
-    //private int m_StrongEnemies;
     private int? m_CurrentEnemy = null;
     private float m_SpawnInterval = 1f;
     private float m_TileDisplacement = 2.0f;
     private float m_OriginalTimeScale;
     private string m_MapName;
-    private Player m_Player;
     private GameState m_GameState;
     private Camera m_MainCamera;
-    private MoveCamera m_MoveCamera;
+    private CameraMove m_MoveCamera;
     private MapReaderMono m_MapReaderMono;
     private IPathFinder m_PathFinder;
     private IEnumerable<Vector2Int> m_Path;
@@ -55,16 +52,15 @@ public class MapBuilderMono : MonoBehaviour
 
     private void Start()
     {
-        m_Player = FindObjectOfType<Player>();
         m_GameState = FindObjectOfType<GameState>();
         m_MapReaderMono = GetComponent<MapReaderMono>();
         m_MainCamera = Camera.main;
-        m_MoveCamera = m_MainCamera.GetComponent<MoveCamera>();
+        m_MoveCamera = m_MainCamera.GetComponent<CameraMove>();
         GenerateMap();
+        m_GameState.WaveNumber = Mathf.RoundToInt(m_MapData.EnemyWaves.Count * 0.5f);
         m_GameState.NormalEnemies = m_MapData.EnemyWaves.Dequeue();
         m_GameState.StrongEnemies = m_MapData.EnemyWaves.Dequeue();
-        m_GameState.WaveNumber = m_MapData.EnemyWaves.Count - 1;
-        
+        m_GameState.EnemyReinforcement = m_GameState.NormalEnemies + m_GameState.StrongEnemies;
     }
 
     private void OnValidate()
@@ -149,21 +145,13 @@ public class MapBuilderMono : MonoBehaviour
                 if(m_GameState.NormalEnemies == 0 && m_GameState.StrongEnemies == 0 && m_GameState.WaveNumber >= 0)
                 {
                     bool nextWave = false;
-                    foreach (EnemyController enemy in EnemyManager.Instance.EnemyControllers)
+                    if (EnemyManager.Instance.ActiveEnemyControllers.Count <= 0)
                     {
-                        if (enemy.isActiveAndEnabled)
-                        {
-                            nextWave = false;
-                            break;
-                        }
-                        else
-                        {
-                            nextWave = true;
-                        }
+                        nextWave = true;
                     }
                     if (nextWave)
                     {
-                        m_GameState.DecreaseWaveNumber();
+                        m_GameState.DecreaseWaves();
                         if (m_MapData.EnemyWaves.Count > 1)
                         {
                             m_GameState.NormalEnemies = m_MapData.EnemyWaves.Dequeue();
@@ -194,34 +182,6 @@ public class MapBuilderMono : MonoBehaviour
                 SelectScriptablePool(objectPosition.Value.tag);
                 m_CurrentScriptablePool.Rent(true).transform.position = objectPosition.Key;
             }
-        }
-    }
-
-    private void SelectScriptablePool(string tag)
-    {
-        if(m_PathTileScriptablePool.Prefab.CompareTag(tag))
-        {
-            m_CurrentScriptablePool = m_PathTileScriptablePool;
-        }
-        else if(m_ObstacleTileScriptablePool.Prefab.CompareTag(tag))
-        {
-            m_CurrentScriptablePool = m_ObstacleTileScriptablePool;
-        }
-        else if (m_FreezeTowerScriptablePool.Prefab.CompareTag(tag))
-        {
-            m_CurrentScriptablePool = m_FreezeTowerScriptablePool;
-        }
-        else if (m_BombTowerScriptablePool.Prefab.CompareTag(tag))
-        {
-            m_CurrentScriptablePool = m_BombTowerScriptablePool;
-        }
-        else if (m_EnemyBaseScriptablePool.Prefab.CompareTag(tag))
-        {
-            m_CurrentScriptablePool = m_EnemyBaseScriptablePool;
-        }
-        else
-        {
-            m_CurrentScriptablePool = m_PlayerBaseScriptablePool;
         }
     }
 
@@ -258,9 +218,38 @@ public class MapBuilderMono : MonoBehaviour
         }
     }
 
+    private void SelectScriptablePool(string tag)
+    {
+        if(m_PathTileScriptablePool.Prefab.CompareTag(tag))
+        {
+            m_CurrentScriptablePool = m_PathTileScriptablePool;
+        }
+        else if(m_ObstacleTileScriptablePool.Prefab.CompareTag(tag))
+        {
+            m_CurrentScriptablePool = m_ObstacleTileScriptablePool;
+        }
+        else if (m_FreezeTowerScriptablePool.Prefab.CompareTag(tag))
+        {
+            m_CurrentScriptablePool = m_FreezeTowerScriptablePool;
+        }
+        else if (m_BombTowerScriptablePool.Prefab.CompareTag(tag))
+        {
+            m_CurrentScriptablePool = m_BombTowerScriptablePool;
+        }
+        else if (m_EnemyBaseScriptablePool.Prefab.CompareTag(tag))
+        {
+            m_CurrentScriptablePool = m_EnemyBaseScriptablePool;
+        }
+        else
+        {
+            m_CurrentScriptablePool = m_PlayerBaseScriptablePool;
+        }
+    }
+
     private void PlayMap()
     {
-        EnemyManager.Instance.CreateEnemy(m_MapData.EnemySpawnWorldPosition, m_MapData.Path, m_CurrentEnemy);
+        EnemyManager.Instance.CreateEnemy(m_MapData.EnemySpawnWorldPosition, m_CurrentEnemy);
+        EnemyManager.Instance.StartMoving(m_MapData.Path);
     }
 
     private void ClearMap()
@@ -268,17 +257,13 @@ public class MapBuilderMono : MonoBehaviour
         object[] oldMap = FindObjectsOfType<GameObject>();
         foreach(GameObject gameObject in oldMap)
         {
-            if (gameObject.transform.parent == null && !gameObject.CompareTag(k_DontDestroy))
+            if (!gameObject.CompareTag(k_DontDestroy) || !gameObject.CompareTag(k_ScriptablePool))
             {
                 gameObject.SetActive(false);
             }
-            //if(gameObject.CompareTag(k_ScriptablePool))
-            //{
-            //    gameObject.SetActive(true);
-            //}
         }
         m_MapData.ClearLists();
         m_MoveCamera.ResetCameraPosition();
-        EnemyManager.Instance.EnemyControllers.Clear();
+        EnemyManager.Instance.ActiveEnemyControllers.Clear();
     }
 }

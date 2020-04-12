@@ -1,6 +1,18 @@
 ﻿using UnityEngine;
 
-public class MoveCamera : MonoBehaviour
+public interface IResetCamera
+{
+    void ResetCameraPosition();
+}
+
+public interface IMoveCamera
+{
+    void MoveCameraToOrigin(Vector3 origin);
+}
+
+public interface ICamera : IMoveCamera, IResetCamera { }
+
+public class CameraMove : MonoBehaviour, ICamera
 {
     private Vector3 m_InitialPosition;
 

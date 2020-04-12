@@ -1,7 +1,7 @@
 ﻿using Tools;
 using UnityEngine;
 
-class BombWeapon : MonoBehaviour, IWeapon
+class BombWeapon : MonoBehaviour, IShoot
 {
     [SerializeField] private GameObjectScriptablePool m_BombBulletScriptablePool;
 
@@ -9,8 +9,8 @@ class BombWeapon : MonoBehaviour, IWeapon
     {
         GameObject bullet = m_BombBulletScriptablePool.Rent(true);
         Bullet bulletComponent = bullet.GetComponent<Bullet>();
-        bulletComponent.Reset();
+        bulletComponent.ResetVelocity();
         bulletComponent.transform.position = transform.position;
-        bulletComponent.Push(direction);
+        bulletComponent.Shoot(direction);
     }
 }

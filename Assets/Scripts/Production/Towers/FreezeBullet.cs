@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-class FreezeBullet : MonoBehaviour, IBullet
+class FreezeBullet : MonoBehaviour, ITriggerable
 {
     public void OnTriggerEnter(Collider other)
     {

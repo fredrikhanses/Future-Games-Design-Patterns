@@ -7,29 +7,33 @@ public class EnemyManager : MonoSingleton<EnemyManager>
 {
     [SerializeField] private GameObjectScriptablePool m_EnemyScriptablePool;
     [SerializeField] private GameObjectScriptablePool m_StrongEnemyScriptablePool;
-    
+
+    private GameState m_GameState;
     private GameObject m_CurrentEnemy;
     private EnemyController m_CurrentEnemyController;
     private GameObjectScriptablePool m_CurrentScriptablePool;
     private HashSet<EnemyController> m_EnemyControllers = new HashSet<EnemyController>();
 
-    public HashSet<EnemyController> EnemyControllers { get => m_EnemyControllers; }
+    public HashSet<EnemyController> ActiveEnemyControllers { get => m_EnemyControllers; }
+
+    private void Start()
+    {
+        m_GameState = FindObjectOfType<GameState>();
+    }
 
     /// <summary> Creates an enemy at a specific position and then makes it start moving along a path.</summary>
     /// <param name="spawnPosition">Position to spawn the enemy at.</param>
     /// <param name="path">Path that the enemy should move along.</param>
     /// <param name="prefabIndex">Default null for random enemy, 0 for strong enemy, 1 for normal enemy.</param>
-    public void CreateEnemy(Vector3 spawnPosition, IEnumerable<Vector3> path, int? prefabIndex = null)
+    public void CreateEnemy(Vector3 spawnPosition, int? prefabIndex = null)
     {
         SelectScriptablePool(prefabIndex);
         m_CurrentEnemy = m_CurrentScriptablePool.Rent(true);
         m_CurrentEnemyController = m_CurrentEnemy.GetComponent<EnemyController>();
-        m_CurrentEnemyController.Reset(spawnPosition);
-        if (EnemyControllers.Contains(m_CurrentEnemyController) == false)
-        {
-            EnemyControllers.Add(m_CurrentEnemyController);
-        }
-        MoveStart(path);
+        m_CurrentEnemyController.ResetPosition(spawnPosition);
+        m_CurrentEnemyController.Reset();
+        ActiveEnemyControllers.Add(m_CurrentEnemyController);
+        m_GameState.IncreaseActiveEnemies();
     }
 
     private void SelectScriptablePool(int? prefabIndex)
@@ -49,9 +53,9 @@ public class EnemyManager : MonoSingleton<EnemyManager>
         }
     }
 
-    private void MoveStart(IEnumerable<Vector3> path)
+    public void StartMoving(IEnumerable<Vector3> path)
     {
         m_CurrentEnemyController = m_CurrentEnemy.GetComponent<EnemyController>();
-        m_CurrentEnemyController.MoveStart(path);
+        m_CurrentEnemyController.StartMoving(path);
     }
 }

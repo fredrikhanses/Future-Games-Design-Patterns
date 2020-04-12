@@ -3,7 +3,19 @@ using System.Text;
 
 namespace Tools
 {
-    public class TextHandler
+    public interface IReadText
+    {
+        string ReadText(string name);
+    }
+
+    public interface IWriteText
+    {
+        void WriteText(string name, string content);
+    }
+
+    public interface ITextHandler : IReadText, IWriteText { }
+
+    public class TextHandler : ITextHandler
     {
         private StringBuilder m_StringBuilder = new StringBuilder(); 
         private const string k_MapPath = "Assets/Resources/MapSettings/";

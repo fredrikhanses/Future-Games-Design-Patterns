@@ -1,7 +1,7 @@
 ﻿using Tools;
 using UnityEngine;
 
-class BombBullet : MonoBehaviour, IBullet
+class BombBullet : MonoBehaviour, ITriggerable
 {
     [SerializeField] private GameObjectScriptablePool m_ExplosionScriptablePool;
     [SerializeField] private GameObjectScriptablePool m_ExplosionRadiusScriptablePool;

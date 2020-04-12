@@ -14,7 +14,7 @@ namespace Tools
         public GameObject Prefab => m_Prefab;
     }
 
-    public class MapReaderMono : MonoBehaviour
+    public class MapReaderMono : MonoBehaviour, IMapReader
     {
        
         [SerializeField] private MapKeyDataMono[] m_MapReaderMonos;

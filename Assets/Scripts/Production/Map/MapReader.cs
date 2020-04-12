@@ -14,7 +14,12 @@ public struct MapKeyData
     }
 }
 
-public class MapReader
+public interface IMapReader
+{
+    MapData ReadMap(string mapName);
+}
+
+public class MapReader : IMapReader
 {
     private readonly Dictionary<TileType, GameObject> m_PrefabsById;
     private readonly float m_Displacement = 1f;

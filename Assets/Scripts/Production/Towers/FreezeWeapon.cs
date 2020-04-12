@@ -1,7 +1,7 @@
 ﻿using Tools;
 using UnityEngine;
 
-class FreezeWeapon : MonoBehaviour, IWeapon
+class FreezeWeapon : MonoBehaviour, IShoot
 {
     [SerializeField] private GameObjectScriptablePool m_FreezeBulletScriptablePool;
 
@@ -9,8 +9,8 @@ class FreezeWeapon : MonoBehaviour, IWeapon
     {
         GameObject bullet = m_FreezeBulletScriptablePool.Rent(true);
         Bullet bulletComponent = bullet.GetComponent<Bullet>();
-        bulletComponent.Reset();
+        bulletComponent.ResetVelocity();
         bulletComponent.transform.position = transform.position;
-        bulletComponent.Push(direction);
+        bulletComponent.Shoot(direction);
     }
 }

@@ -1,6 +1,23 @@
 ﻿using System;
 using UnityEngine;
 
+public interface IIncreaseHealth
+{
+    void IncreaseHealth();
+}
+
+public interface IResetHealth
+{
+    void ResetHealth();
+}
+
+public interface IDecreaseHealth
+{
+    void DecreaseHealth();
+}
+
+public interface IPlayer : IDecreaseHealth, IIncreaseHealth, IResetHealth { }
+
 public class Player : MonoBehaviour
 {
     [SerializeField] private int m_InitHealth;

@@ -12,16 +12,13 @@ public class TowerController : MonoBehaviour
     private void UpdateClosestTarget()
     {
         float shortestDistanceSqr = float.MaxValue;
-        foreach (EnemyController enemy in EnemyManager.Instance.EnemyControllers)
+        foreach (EnemyController enemy in EnemyManager.Instance.ActiveEnemyControllers)
         {
-            if (enemy.isActiveAndEnabled)
+            float distanceSqr = (enemy.transform.position - m_TowerTop.transform.position).sqrMagnitude;
+            if (distanceSqr <= m_MaxRange * m_MaxRange && distanceSqr < shortestDistanceSqr)
             {
-                float distanceSqr = (enemy.transform.position - m_TowerTop.transform.position).sqrMagnitude;
-                if (distanceSqr <= m_MaxRange * m_MaxRange && distanceSqr < shortestDistanceSqr)
-                {
-                    shortestDistanceSqr = distanceSqr;
-                    m_CurrentEnemy = enemy;
-                }
+                shortestDistanceSqr = distanceSqr;
+                m_CurrentEnemy = enemy;
             }
         }
     }
@@ -29,12 +26,12 @@ public class TowerController : MonoBehaviour
     void FixedUpdate()
     {
         // Set first closest target.
-        if(m_CurrentEnemy == null && EnemyManager.Instance.EnemyControllers.Count > 0)
+        if(m_CurrentEnemy == null && EnemyManager.Instance.ActiveEnemyControllers.Count > 0)
         {
             UpdateClosestTarget();
         }
         // Set new closest target when current target is dead.
-        if (m_CurrentEnemy != null && m_CurrentEnemy.isActiveAndEnabled == false && EnemyManager.Instance.EnemyControllers.Count > 0)
+        if (m_CurrentEnemy != null && m_CurrentEnemy.isActiveAndEnabled == false && EnemyManager.Instance.ActiveEnemyControllers.Count > 0)
         {
             UpdateClosestTarget();
         }
@@ -44,7 +41,7 @@ public class TowerController : MonoBehaviour
         {
             Vector3 m_LookDirection = m_CurrentEnemy.transform.position - m_TowerTop.transform.position;
             // Set new closest target when current target is out of range.
-            if (m_LookDirection.sqrMagnitude > (m_MaxRange * m_MaxRange) && EnemyManager.Instance.EnemyControllers.Count > 0)
+            if (m_LookDirection.sqrMagnitude > (m_MaxRange * m_MaxRange) && EnemyManager.Instance.ActiveEnemyControllers.Count > 0)
             {
                 UpdateClosestTarget();
             }
