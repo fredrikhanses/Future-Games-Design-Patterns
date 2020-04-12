@@ -35,7 +35,6 @@ public class TowerController : MonoBehaviour
         {
             UpdateClosestTarget();
         }
-
         // Current target is active.
         if (m_CurrentEnemy != null && m_CurrentEnemy.isActiveAndEnabled)
         {

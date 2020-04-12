@@ -8,7 +8,7 @@ public class EnemyManager : MonoSingleton<EnemyManager>
     [SerializeField] private GameObjectScriptablePool m_EnemyScriptablePool;
     [SerializeField] private GameObjectScriptablePool m_StrongEnemyScriptablePool;
 
-    private GameState m_GameState;
+    private EnemyCounter m_EnemyCounter;
     private GameObject m_CurrentEnemy;
     private EnemyController m_CurrentEnemyController;
     private GameObjectScriptablePool m_CurrentScriptablePool;
@@ -18,7 +18,7 @@ public class EnemyManager : MonoSingleton<EnemyManager>
 
     private void Start()
     {
-        m_GameState = FindObjectOfType<GameState>();
+        m_EnemyCounter = FindObjectOfType<EnemyCounter>();
     }
 
     /// <summary> Creates an enemy at a specific position and then makes it start moving along a path.</summary>
@@ -33,7 +33,7 @@ public class EnemyManager : MonoSingleton<EnemyManager>
         m_CurrentEnemyController.ResetPosition(spawnPosition);
         m_CurrentEnemyController.Reset();
         ActiveEnemyControllers.Add(m_CurrentEnemyController);
-        m_GameState.IncreaseActiveEnemies();
+        m_EnemyCounter.IncreaseActiveEnemies();
     }
 
     private void SelectScriptablePool(int? prefabIndex)

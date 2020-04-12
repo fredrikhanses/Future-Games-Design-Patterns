@@ -27,7 +27,7 @@ public class EnemyController : MonoBehaviour, IEnemy
     [SerializeField] private float m_Speed;
     [SerializeField] private Rigidbody m_Rigidbody;
     [SerializeField] private Player m_Player;
-    [SerializeField] private GameState m_GameState;
+    [SerializeField] private EnemyCounter m_EnemyCounter;
     [SerializeField] private Animator m_Animator;
 
     private bool m_Move;
@@ -68,9 +68,9 @@ public class EnemyController : MonoBehaviour, IEnemy
         {
             m_Player = FindObjectOfType<Player>();
         }
-        if (m_GameState == null)
+        if (m_EnemyCounter == null)
         {
-            m_GameState = FindObjectOfType<GameState>();
+            m_EnemyCounter = FindObjectOfType<EnemyCounter>();
         }
     }
 
@@ -196,7 +196,7 @@ public class EnemyController : MonoBehaviour, IEnemy
 
     private void Sleep()
     {
-        m_GameState.DecreaseActiveEnemies();
+        m_EnemyCounter.DecreaseActiveEnemies();
         gameObject.SetActive(false);
     }
 

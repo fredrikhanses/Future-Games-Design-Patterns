@@ -4,16 +4,13 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - DontDestroy
   - Bullet
-  - Enemy
   - BombTower
   - FreezeTower
   - Path
   - Obstacle
   - EnemyBase
   - PlayerBase
-  - ScriptablePool
   - Freeze
   layers:
   - Default

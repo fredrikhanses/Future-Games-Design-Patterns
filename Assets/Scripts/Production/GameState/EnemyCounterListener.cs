@@ -7,18 +7,16 @@ public interface ILoseGame
 }
 
 [RequireComponent(typeof(Text))]
-public class GameStateListener : MonoBehaviour, ILoseGame
+public class EnemyCounterListener : MonoBehaviour, ILoseGame
 {
     [SerializeField] private Text m_EnemyWaveTextField;
-    [SerializeField] private Text m_NormalEnemiesTextField;
-    [SerializeField] private Text m_StrongEnemiesTextField;
     [SerializeField] private Text m_GameStateTextField;
     [SerializeField] private Text m_GameTimeTextField;
     [SerializeField] private Text m_EnemyReinforcementTextField;
     [SerializeField] private GameObject m_GameTimeText;
     [SerializeField] private Text m_ActiveEnemiesTextField;
-    [SerializeField] private float m_GameOverDelay = 2.0f;
-    [SerializeField] private GameState m_GameState;
+    [SerializeField] private float m_GameStateDelay = 2.0f;
+    [SerializeField] private EnemyCounter m_EnemyCounter;
     [SerializeField] private Player m_Player;
 
     private const string k_Zero = "0";
@@ -27,13 +25,11 @@ public class GameStateListener : MonoBehaviour, ILoseGame
 
     private void OnEnable()
     {
-        if (m_GameState != null)
+        if (m_EnemyCounter != null)
         {
-            m_GameState.OnWaveNumberChanged += UpdateEnemyWaveTextField;
-            m_GameState.OnNormalEnemiesChanged += UpdateNormalEnemiesTextField;
-            m_GameState.OnStrongEnemiesChanged += UpdateStrongEnemiesTextField;
-            m_GameState.OnActiveEnemiesChanged += UpdateActiveEnemiesTextField;
-            m_GameState.OnEnemyReinforcementChanged += UpdateEnemyReinforcementTextField;
+            m_EnemyCounter.OnWaveNumberChanged += UpdateEnemyWaveTextField;
+            m_EnemyCounter.OnActiveEnemiesChanged += UpdateActiveEnemiesTextField;
+            m_EnemyCounter.OnEnemyReinforcementChanged += UpdateEnemyReinforcementTextField;
         }
     }
 
@@ -44,24 +40,20 @@ public class GameStateListener : MonoBehaviour, ILoseGame
             m_Player = FindObjectOfType<Player>();
 
         }
-        if (m_GameState == null)
+        if (m_EnemyCounter == null)
         {
-            m_GameState = FindObjectOfType<GameState>();
+            m_EnemyCounter = FindObjectOfType<EnemyCounter>();
         }
-        m_GameState.OnWaveNumberChanged += UpdateEnemyWaveTextField;
-        m_GameState.OnNormalEnemiesChanged += UpdateNormalEnemiesTextField;
-        m_GameState.OnStrongEnemiesChanged += UpdateStrongEnemiesTextField;
-        m_GameState.OnActiveEnemiesChanged += UpdateActiveEnemiesTextField;
-        m_GameState.OnEnemyReinforcementChanged += UpdateEnemyReinforcementTextField;
+        m_EnemyCounter.OnWaveNumberChanged += UpdateEnemyWaveTextField;
+        m_EnemyCounter.OnActiveEnemiesChanged += UpdateActiveEnemiesTextField;
+        m_EnemyCounter.OnEnemyReinforcementChanged += UpdateEnemyReinforcementTextField;
     }
 
     private void OnDisable()
     {
-        m_GameState.OnWaveNumberChanged -= UpdateEnemyWaveTextField;
-        m_GameState.OnNormalEnemiesChanged -= UpdateNormalEnemiesTextField;
-        m_GameState.OnStrongEnemiesChanged -= UpdateStrongEnemiesTextField;
-        m_GameState.OnActiveEnemiesChanged -= UpdateActiveEnemiesTextField;
-        m_GameState.OnEnemyReinforcementChanged -= UpdateEnemyReinforcementTextField;
+        m_EnemyCounter.OnWaveNumberChanged -= UpdateEnemyWaveTextField;
+        m_EnemyCounter.OnActiveEnemiesChanged -= UpdateActiveEnemiesTextField;
+        m_EnemyCounter.OnEnemyReinforcementChanged -= UpdateEnemyReinforcementTextField;
     }
 
     private void UpdateEnemyReinforcementTextField(int enemyReinforcement)
@@ -69,7 +61,6 @@ public class GameStateListener : MonoBehaviour, ILoseGame
         if (enemyReinforcement <= 0)
         {
             m_EnemyReinforcementTextField.text = k_Zero;
-
         }
         else
         {
@@ -90,30 +81,6 @@ public class GameStateListener : MonoBehaviour, ILoseGame
         }
     }
 
-    private void UpdateNormalEnemiesTextField(int normalEnemiesRemaining)
-    {
-        if (normalEnemiesRemaining <= 0)
-        {
-            m_NormalEnemiesTextField.text = k_Zero;
-        }
-        else
-        {
-            m_NormalEnemiesTextField.text = normalEnemiesRemaining.ToString();
-        }
-    }
-
-    private void UpdateStrongEnemiesTextField(int strongEnemiesRemaining)
-    {
-        if (strongEnemiesRemaining <= 0)
-        {
-            m_StrongEnemiesTextField.text = k_Zero;
-        }
-        else
-        {
-            m_StrongEnemiesTextField.text = strongEnemiesRemaining.ToString();
-        }
-    }
-
     private void UpdateActiveEnemiesTextField(int activeEnemies)
     {
         if (activeEnemies <= 0)
@@ -128,7 +95,7 @@ public class GameStateListener : MonoBehaviour, ILoseGame
 
     private void WinGame()
     {
-        if (m_GameState.NormalEnemies <= 0 && m_GameState.StrongEnemies <= 0 && m_GameState.WaveNumber <= 0)
+        if (m_EnemyCounter.NormalEnemies <= 0 && m_EnemyCounter.StrongEnemies <= 0 && m_EnemyCounter.WaveNumber <= 0)
         {
             bool winGame = false;
             if (EnemyManager.Instance.ActiveEnemyControllers.Count <= 0)
@@ -137,7 +104,7 @@ public class GameStateListener : MonoBehaviour, ILoseGame
             }
             if (winGame)
             {
-                Invoke(nameof(WinScreen), m_GameOverDelay);
+                Invoke(nameof(WinScreen), m_GameStateDelay);
             }
         }
     }
@@ -146,7 +113,7 @@ public class GameStateListener : MonoBehaviour, ILoseGame
     {
         if (m_Player.Health <= 0)
         {
-            Invoke(nameof(GameOverScreen), m_GameOverDelay);
+            Invoke(nameof(GameOverScreen), m_GameStateDelay);
         }
     }
 

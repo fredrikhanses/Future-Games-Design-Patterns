@@ -5,9 +5,9 @@ using UnityEngine.UI;
 public class PlayerHealthListener : MonoBehaviour
 {
     [SerializeField] private Text m_TextField;
-    [SerializeField] private GameStateListener m_GameStateListener;
+    [SerializeField] private EnemyCounterListener m_EnemyCounterListener;
     private Player m_Player;
-    private string m_PlayerDied = "Player Died";
+    private const string k_PlayerDied = "Player Died";
 
     private void OnEnable()
     {
@@ -23,9 +23,9 @@ public class PlayerHealthListener : MonoBehaviour
         {
             m_TextField = GetComponent<Text>();
         }
-        if (m_GameStateListener == null)
+        if (m_EnemyCounterListener == null)
         {
-            m_GameStateListener = GetComponent<GameStateListener>();
+            m_EnemyCounterListener = GetComponent<EnemyCounterListener>();
         }
         m_Player = FindObjectOfType<Player>();
         m_Player.OnPlayerHealthChanged += UpdateTextField;
@@ -41,8 +41,8 @@ public class PlayerHealthListener : MonoBehaviour
     {
         if (playerHealth <= 0)
         {
-            m_TextField.text = m_PlayerDied;
-            m_GameStateListener.LoseGame();
+            m_TextField.text = k_PlayerDied;
+            m_EnemyCounterListener.LoseGame();
         }
         else
         {

@@ -33,17 +33,16 @@ public interface IWinGame
 
 public interface IEnemyCounter : IDecreaseEnemyWaves, IDecreaseNormalEnemies, IDecreaseStrongEnemies, IIncreaseActiveEnemies, IDecreaseActiveEnemies, IWinGame { }
 
-class GameState : MonoBehaviour, IEnemyCounter
+class EnemyCounter : MonoBehaviour, IEnemyCounter
 {
     private int m_WaveNumber;
-    private int m_NormalEnemies;
-    private int m_StrongEnemies;
     private int m_ActiveEnemies;
     private int m_EnemyReinforcement;
 
+    public int NormalEnemies { get; set; }
+    public int StrongEnemies { get; set; }
+
     public event Action<int> OnWaveNumberChanged;
-    public event Action<int> OnNormalEnemiesChanged;
-    public event Action<int> OnStrongEnemiesChanged;
     public event Action<int> OnActiveEnemiesChanged;
     public event Action<int> OnEnemyReinforcementChanged;
 
@@ -86,32 +85,6 @@ class GameState : MonoBehaviour, IEnemyCounter
         }
     }
 
-    public int NormalEnemies
-    {
-        get => m_NormalEnemies;
-        set
-        {
-            if (m_NormalEnemies != value)
-            {
-                m_NormalEnemies = value;
-                OnNormalEnemiesChanged?.Invoke(m_NormalEnemies);
-            }
-        }
-    }
-
-    public int StrongEnemies
-    {
-        get => m_StrongEnemies;
-        set
-        {
-            if (m_StrongEnemies != value)
-            {
-                m_StrongEnemies = value;
-                OnStrongEnemiesChanged?.Invoke(m_StrongEnemies);
-            }
-        }
-    }
-
     public void DecreaseActiveEnemies()
     {
         ActiveEnemies--;
@@ -144,4 +117,3 @@ class GameState : MonoBehaviour, IEnemyCounter
         WaveNumber--;
     }
 }
-

@@ -4,7 +4,6 @@ using UnityEngine;
 public abstract class MonoSingleton<T> : MonoBehaviour where T: MonoSingleton<T>
 {
     private static T m_Instance;
-    private const string k_DontDestroy = "DontDestroy";
 
     public static T Instance
     {
@@ -54,7 +53,6 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T: MonoSingleton<T>
                     }
                 }
                 DontDestroyOnLoad(m_Instance.gameObject);
-                m_Instance.gameObject.tag = k_DontDestroy;
             }
             return m_Instance;
         }
@@ -66,7 +64,6 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T: MonoSingleton<T>
         {
             m_Instance = (T)this; //GetComponent<T>();
             DontDestroyOnLoad(gameObject);
-            m_Instance.gameObject.tag = k_DontDestroy;
         }
         else if(m_Instance != this)
         {

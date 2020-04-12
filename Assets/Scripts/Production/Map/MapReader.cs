@@ -44,7 +44,7 @@ public class MapReader : IMapReader
     private readonly char[] m_MapSeparatorChar = { '#' };
     private readonly char[] m_LineSeparatorChar = { '\n' };
     private readonly char[] m_EnemyTypeSeparatorChar = { ' ' };
-    private float m_GroundHeight = 0.8f;
+    private readonly float m_GroundHeight = 0.8f;
     private readonly TextHandler m_TextHandler = new TextHandler();
     private readonly MapData m_MapData = new MapData();
     private Vector3 m_EnemySpawnWorldPosition = new Vector3();
