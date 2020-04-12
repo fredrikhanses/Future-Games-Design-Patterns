@@ -16,7 +16,22 @@ public interface IDecreaseStrongEnemies
     void DecreaseStrongEnemies();
 }
 
-public interface IEnemyCounter : IDecreaseEnemyWaves, IDecreaseNormalEnemies, IDecreaseStrongEnemies { }
+public interface IDecreaseActiveEnemies
+{
+    void DecreaseActiveEnemies();
+}
+
+public interface IIncreaseActiveEnemies
+{
+    void IncreaseActiveEnemies();
+}
+
+public interface IWinGame
+{
+    void WinGame();
+}
+
+public interface IEnemyCounter : IDecreaseEnemyWaves, IDecreaseNormalEnemies, IDecreaseStrongEnemies, IIncreaseActiveEnemies, IDecreaseActiveEnemies, IWinGame { }
 
 class GameState : MonoBehaviour, IEnemyCounter
 {
@@ -106,7 +121,6 @@ class GameState : MonoBehaviour, IEnemyCounter
     {
         ActiveEnemies++;
     }
-
 
     public void DecreaseWaves()
     {

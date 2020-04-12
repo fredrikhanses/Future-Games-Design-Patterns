@@ -115,39 +115,5 @@ namespace Tests
             IEnumerable<Vector2Int> path = pathFinder.FindPath(new Vector2Int(x0, y0), new Vector2Int(x1, y1));
             Assert.AreEqual(result, path.Count());
         }
-
-        private event Action<int> m_IntEvent;
-
-        [Test]
-        public void EventTest()
-        {
-            List<int> myList = new List<int>();
-            Action<int> del0 = null, del1 = null, del2 = null, del3 = null;
-            del0 = (value) => 
-            {
-                myList = null;
-                m_IntEvent -= del1;
-                m_IntEvent -= del2;
-                m_IntEvent -= del3;
-            };
-            del1 = (value) => 
-            {
-                myList.Add(1);
-            };
-            del2 = (value) => 
-            {
-                myList.Add(1);
-            };
-            del3 = (value) => 
-            {
-                myList.Add(1);
-            };
-            m_IntEvent += del0;
-            m_IntEvent += del1;
-            m_IntEvent += del2;
-            m_IntEvent += del3;
-            m_IntEvent.Invoke(0);
-            Assert.AreEqual(1, myList);
-        }
     }
 }

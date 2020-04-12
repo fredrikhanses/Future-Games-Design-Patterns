@@ -1,22 +1,17 @@
 ﻿using System;
 using UnityEngine;
 
-public interface IIncreaseHealth
-{
-    void IncreaseHealth();
-}
-
 public interface IResetHealth
 {
     void ResetHealth();
 }
 
-public interface IDecreaseHealth
+public interface ITakeDamage
 {
-    void DecreaseHealth();
+    void TakeDamage(int damage);
 }
 
-public interface IPlayer : IDecreaseHealth, IIncreaseHealth, IResetHealth { }
+public interface IPlayer : ITakeDamage, IResetHealth { }
 
 public class Player : MonoBehaviour
 {
@@ -37,54 +32,16 @@ public class Player : MonoBehaviour
         }
     }
 
-    private string m_Name;
-    public event Action<string> OnNameChanged;
-
-    public string Name
-    {
-        get => m_Name;
-        set
-        {
-            if (m_Name != value)
-            {
-                m_Name = value;
-                OnNameChanged?.Invoke(m_Name);
-            }
-        }
-    }
-
-    [ContextMenu("Reset Health")]
     public void ResetHealth()
     {
         Health = m_InitHealth;
     }
 
-    [ContextMenu("Increase Health")]
-    public void IncreaseHealth()
-    {
-        Health++;
-    }
-
-    [ContextMenu("Decrease Health")]
-    public void DecreaseHealth()
-    {
-        if (Health > 0)
-        {
-            Health--;
-        } 
-    }
-
-    public void DoDamage(int damage)
+    public void TakeDamage(int damage)
     {
         if (Health > 0)
         {
             Health -= damage;
         }
-    }
-
-    public void Win()
-    {
-        Health += 100;
-        Health -= 100;
     }
 }

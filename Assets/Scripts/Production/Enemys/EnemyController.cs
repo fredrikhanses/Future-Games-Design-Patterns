@@ -150,7 +150,7 @@ public class EnemyController : MonoBehaviour, IEnemy
         }
         else
         {
-            m_Player.DoDamage(m_Damage);
+            m_Player.TakeDamage(m_Damage);
             Sleep(); 
         }
     }

@@ -130,11 +130,11 @@ public class MapReader : IMapReader
             string[] numberInWave = wave.Split(m_EnemyTypeSeparatorChar, StringSplitOptions.RemoveEmptyEntries);
             foreach (string number in numberInWave)
             {
-                int.TryParse(number, out int result);
-                m_MapData.EnemyWaves.Enqueue(result);
+                if(int.TryParse(number, out int result))
+                {
+                    m_MapData.EnemyWaves.Enqueue(result);
+                }
             }
         }
-        // Remove first empty wave
-        m_MapData.EnemyWaves.Dequeue();
     }
 }
